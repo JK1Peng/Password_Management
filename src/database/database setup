@@ -1,0 +1,59 @@
+### DATABASE STRUCTURE
+    # USERS
+        - user_id
+        - username
+        - master_password
+        - email
+        - created_datetime
+        - last_accessed_datetime
+    # CATEGORIES
+        - category_id
+        - user_id
+        - parent_category
+        - category_name
+    # PASSWORDS
+        - entry_id
+        - user_id
+        - category_id
+        - domain
+        - account_name
+        - url
+        - password
+        - created_datetime
+        - last_modified_datetime
+
+### SQL COMMANDS USED TO CREATE DATABASE TABLES
+
+CREATE TABLE users (
+    user_id INT,
+    username varchar UNIQUE NOT NULL,
+    master_password varchar NOT NULL,
+    email varchar UNIQUE NOT NULL,
+    created_datetime timestamp,
+    last_accessed_datetime timestamp,
+    PRIMARY KEY (user_id)
+);
+
+CREATE TABLE categories (
+    category_id INT,
+    user_id INT,
+    parent_category_id INT,
+    category_name varchar NOT NULL,
+    PRIMARY KEY (category_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id)
+);
+
+CREATE TABLE passwords (
+    entry_id INT,
+    user_id INT,
+    category_id INT,
+    domain varchar NOT NULL,
+    account_name varchar,
+    url varchar,
+    password varchar NOT NULL,
+    created_datetime timestamp,
+    last_modified_datetime timestamp,
+    PRIMARY KEY (entry_id),
+    FOREIGN KEY (user_id) REFERENCES users (user_id),
+    FOREIGN KEY (category_id) REFERENCES categories (category_id)
+);
