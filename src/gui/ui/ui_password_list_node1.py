@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src/gui/ui_password_list_node.ui'
+# Form implementation generated from reading ui file 'src/gui/qt_designer/ui_password_list_node.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -12,9 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_password_list_node(object):
-
-
-    def setupUi(self, password_list_node, num, domain, _password):
+    def setupUi(self, password_list_node):
         password_list_node.setObjectName("password_list_node")
         password_list_node.resize(698, 54)
         password_list_node.setMinimumSize(QtCore.QSize(478, 54))
@@ -26,7 +24,7 @@ class Ui_password_list_node(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.password_list_frame = QtWidgets.QFrame(password_list_node)
         self.password_list_frame.setStyleSheet("QFrame {\n"
-"    border: 1px solid;\n"
+"    border: 0.5px solid;\n"
 "    border-color:#4F4846;\n"
 "\n"
 "}")
@@ -114,7 +112,7 @@ class Ui_password_list_node(object):
 "")
         self.pushButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("src/gui\\icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("src/gui/qt_designer\\icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_6.addWidget(self.pushButton)
@@ -155,14 +153,10 @@ class Ui_password_list_node(object):
     def retranslateUi(self, password_list_node):
         _translate = QtCore.QCoreApplication.translate
         password_list_node.setWindowTitle(_translate("password_list_node", "Form"))
-        self.num_label.setText(_translate("password_list_node", self.num))
-        self.domain_name_label.setText(_translate("password_list_node", self.domain))
-        self.password_label.setText(_translate("password_list_node", self._password))
+        self.num_label.setText(_translate("password_list_node", "1"))
+        self.domain_name_label.setText(_translate("password_list_node", "Domain Name"))
+        self.password_label.setText(_translate("password_list_node", "Password"))
         self.option_button.setText(_translate("password_list_node", "X"))
-
-    def remove(self):
-        self.list_node.hide()
-        database.user_controller.remove_password(self.user_id, self.domain, self.account_name)
 
 
 if __name__ == "__main__":
