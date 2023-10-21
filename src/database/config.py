@@ -4,7 +4,7 @@ from configparser import ConfigParser
 """
 Reads the database.ini and returns a dictionary with configuration info
 """
-def config(filename='../../database/database.ini', section='postgresql'):
+def config(filename='../database/database.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file

@@ -26,9 +26,13 @@ def connect():
 
 Executes query on database connection and returns query results.
 """
-def execute_query(conn, query):
+def execute_query(conn, query, args=None):
     cursor = conn.cursor()                                      # create database cursor
-    cursor.execute(query)                                       # user cursor to execute query
+    if args is None:
+        cursor.execute(query)
+    else:
+        cursor.execute(query, args)
+    print(cursor.query.decode("utf-8"))
     results = cursor.fetchall()                                 # gather the results
     cursor.close()
     return results
@@ -41,8 +45,11 @@ def execute_query(conn, query):
 
 Executes update on the given database connection and commits the result.
 """
-def execute_update(conn, update):
+def execute_update(conn, update, args=None):
     cursor = conn.cursor()                                      # create database cursor
-    cursor.execute(update)                                      # user cursor to execute update
+    if args is None:
+        cursor.execute(update)
+    else:
+        cursor.execute(update, args)
     conn.commit()                                               # commit the results to the database
     cursor.close()

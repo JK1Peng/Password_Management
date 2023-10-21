@@ -2,10 +2,8 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QListWidgetItem
-from PyQt5.QtWidgets import QWidget
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui
 from src.gui.ui.ui_main_window import Ui_main_window
-from src.gui.ui.password_list_node import Ui_password_list_node
 from PasswordWidget import PasswordWidget
 import src.database.user_controller as user_controller
 
@@ -31,7 +29,7 @@ class MainWindow:
         # init ui
         self.ui.new_password_frame.hide()
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("C:\Python\Python39\password_manager\src\gui\icons\magnifying_glass.png"), QtGui.QIcon.Normal,
+        icon1.addPixmap(QtGui.QPixmap("/src/gui/icons/magnifying_glass.png"), QtGui.QIcon.Normal,
                         QtGui.QIcon.Off)
         self.ui.search_button.setIcon(icon1)
 
@@ -46,8 +44,6 @@ class MainWindow:
         self.switch_to_password_page()
         self.passwords = user_controller.get_user_passwords(self.user_id)
         self.update_password_list_widget()
-
-        print(self.passwords)
 
     def update(self, message, *params):
         if message == "switch page":
@@ -72,12 +68,6 @@ class MainWindow:
 
     def append_password_list_widget(self, num, domain, account_name, url, _password):
         item = QListWidgetItem()
-        # list_node = QWidget()
-        # x = Ui_password_list_node()
-        # x.setupUi(list_node, self.user_id, num, domain, account_name, url, _password)
-        # item.setSizeHint(list_node.sizeHint())
-        # self.ui.password_list.addItem(item)
-        # self.ui.password_list.setItemWidget(item, list_node)
         password_widget = PasswordWidget(self.user_id, num, domain, account_name, url, _password)
         item.setSizeHint(password_widget.list_node.sizeHint())
         self.ui.password_list.addItem(item)
@@ -115,10 +105,18 @@ class MainWindow:
             self.ui.new_password_frame.hide()
             self.passwords = user_controller.get_user_passwords(self.user_id)
             self.update_password_list_widget()
+        elif response == 0:
+            pass
+            # todo: existing password error
 
     def search_passwords(self):
         query = self.ui.search_field.text()
-        self.passwords = user_controller.get_user_passwords(self.user_id, query)
+        response = user_controller.get_user_passwords(self.user_id, query)
+        if response == 0:
+            pass
+            # todo: invalid query error
+        else:
+            self.passwords = response
         self.update_password_list_widget()
 
     def show(self):
