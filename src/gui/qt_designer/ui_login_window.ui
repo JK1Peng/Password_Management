@@ -150,9 +150,7 @@
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLineEdit {
-	font: 15px;
-}</string>
+              <string notr="true">QLineEdit {font: 15px;background-color:#fa9487}</string>
              </property>
             </widget>
            </item>
@@ -349,6 +347,31 @@ QPushButton:hover {
          </widget>
         </item>
         <item>
+         <widget class="Line" name="line">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>2</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>2</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:#4F4846</string>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QFrame" name="username_frame1">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -366,12 +389,46 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Username:</string>
+              <string>Username:*</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="username_field1"/>
+            <spacer name="horizontalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>70</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="username_field1">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+	font: 15px;
+}</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_2">
@@ -398,6 +455,9 @@ QPushButton:hover {
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <property name="spacing">
+            <number>84</number>
+           </property>
            <item>
             <widget class="QLabel" name="password_label1">
              <property name="styleSheet">
@@ -407,12 +467,30 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Password:</string>
+              <string>Password:*</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="password_field1"/>
+            <widget class="QLineEdit" name="password_field1">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+	font: 15px;
+}</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_3">
@@ -448,12 +526,30 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Confirm Password:</string>
+              <string>Confirm Password:*</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="confirm_field1"/>
+            <widget class="QLineEdit" name="confirm_field1">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+	font: 15px;
+}</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_4">
@@ -489,12 +585,46 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Email:</string>
+              <string>Email:*</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="email_field1"/>
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>115</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="email_field1">
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLineEdit {
+	font: 15px;
+}</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="horizontalSpacer_5">
@@ -508,6 +638,31 @@ QPushButton:hover {
               </size>
              </property>
             </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QFrame" name="frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	font: bold 12px;
+	color:#fa9487;
+}</string>
+             </property>
+             <property name="text">
+              <string>*Username or email is already in use</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>

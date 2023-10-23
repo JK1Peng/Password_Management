@@ -6,8 +6,9 @@ import datetime
 @param: username: the user's username
 @param: password: the user's master password
 @return: user_id for successful login
-         0 for no users with username found
+         0 for incorrect username or password
          -1 for a database connection error
+         -2 for incorrect login limit exceeded
 
 Allows a user to authenticate themself with the database and establish a connection.
 """
@@ -19,20 +20,40 @@ def login(username, password):
         master_password = execute_query(db, "SELECT master_password FROM users WHERE username = %(username)s;",
                                         {"username": username})
 
-        # check that only one password was returned
+        # check that a password was returned
         if (len(master_password)) == 1:
 
             # if the passwords match, return the user id and close the connection
             if master_password[0][0] == password:
-                user_id = execute_query(db, f"SELECT user_id FROM users WHERE username = %(usernames;",
+                user_id = execute_query(db, f"SELECT user_id FROM users WHERE username = %(username)s;",
                                         {"username": username})[0][0]
 
                 # update user's last accessed date
                 ct = datetime.datetime.now()
                 execute_update(db, f"UPDATE users SET last_accessed_datetime = '{ct}' WHERE user_id = {user_id};")
 
+                # set user's failed login number to 0
+                execute_update(db, f"UPDATE users SET login_counter = 0 WHERE user_id = {user_id};")
+
                 db.close()
                 return user_id
+
+            else:
+                # get number of failed logins for this username
+                num_failed_logins = execute_query(db, f"SELECT login_counter FROM users WHERE username = %(username)s;",
+                                                  {"username": username})[0][0]
+
+                # if number of failed logins exceeds 5, return error code -2
+                if num_failed_logins >= 5:
+                    db.close()
+                    return -2
+
+                # otherwise, increment num failed logins by one
+                execute_update(db, f"UPDATE users SET login_counter = {num_failed_logins + 1} WHERE username = "
+                                   f"%(username)s;", {"username": username})
+
+                db.close()
+                return 0
 
         # if more or less than one password was found, return error code 0
         else:
@@ -65,7 +86,7 @@ def sign_up(username, password, email):
 
         # get number of users with the same email
         email_check = execute_query(db, f"SELECT COUNT(*) FROM users WHERE email = %(email)s;",
-                                    {"email:": email})[0][0]
+                                    {"email": email})[0][0]
 
         # check that there are no users with the same username or email, if not return 0
         if username_check > 0:
@@ -108,6 +129,7 @@ def get_user_passwords(user_id, query=""):
     # get database connection
     db = connect()
     if db is not None:
+
         # if no query is given, grab the entire password repo
         if query == "":
             passwords = execute_query(db, f"SELECT domain, account_name, url, password FROM passwords "
@@ -115,13 +137,14 @@ def get_user_passwords(user_id, query=""):
 
         # otherwise, only grab entries with a domain, account name, or url like '...<query>...'
         else:
+
             # make sure that query does not contain quotations
             if "\'" in query or "\"" in query:
                 return 0
 
-            passwords = execute_query(db, f"SELECT domain, account_name, url, password FROM passwords "
-                                          f"WHERE user_id = {user_id} AND (domain LIKE '%{query}%' OR "
-                                          f"account_name LIKE '%{query}%' OR url LIKE '%{query}%');")
+            passwords = execute_query(db, f"SELECT domain, account_name, url, password FROM passwords p "
+                                          f"WHERE user_id = {user_id} AND (LOWER(domain) LIKE '%{query}%' OR "
+                                          f"LOWER(account_name) LIKE '%{query}%' OR LOWER(url) LIKE '%{query}%');")
 
         # close connection and return passwords
         db.close()
@@ -184,11 +207,14 @@ def add_password(user_id, domain, password, account_name="", url=""):
 @param: account_name: password account name
 @return: 1 for successful removal
          -1 for database connection error
+         
+Remove password from user repo.
 """
 def remove_password(user_id, domain, account_name):
     # get database connection
     db = connect()
     if db is not None:
+
         # remove password with given domain and account name from the repo
         execute_update(db, f"DELETE FROM passwords WHERE user_id = {user_id} AND domain = %(domain)s AND "
                            f"account_name = %(account_name)s;",

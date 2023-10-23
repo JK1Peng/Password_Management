@@ -15,6 +15,7 @@ class LoginWindow:
         self.main_win = None
 
         self.to_login_page()
+        self.ui.label.hide()
         self.ui.to_login_button.clicked.connect(self.to_login_page)
         self.ui.to_signup_button.clicked.connect(self.to_signup_page)
         self.ui.login_button.clicked.connect(self.login)
@@ -30,15 +31,20 @@ class LoginWindow:
         username = self.ui.username_field.text()
         password = self.ui.password_field.text()
         response = user_controller.login(username, password)
-        if response == 0:
-            pass
-            # todo: no users with username error
-        else:
+        if response == 1:
             self.main_win = MainWindow(response)
             self.main_win.show()
             self.login_win.close()
+        elif response == 0:
+            self.ui.username_field.clear()
+            self.ui.password_field.clear()
+            self.ui.username_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+            self.ui.password_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+        elif response == -2:
+            print("User exceeded failed login attempts limit")
 
     def signup(self):
+
         username = self.ui.username_field1.text()
         password = self.ui.password_field1.text()
         confirm = self.ui.confirm_field1.text()
@@ -46,12 +52,23 @@ class LoginWindow:
         if password == confirm:
             response = user_controller.sign_up(username, password, email)
             if response == 0:
-                pass
-                # todo: existing username or email
+                self.ui.label.setText("*Username or email is already in use")
+                self.ui.label.show()
+                self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+                self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+                self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px}")
+                self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px}")
             else:
                 self.main_win = MainWindow(response)
                 self.main_win.show()
                 self.login_win.close()
+        else:
+            self.ui.label.setText("*Passwords do no match")
+            self.ui.label.show()
+            self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+            self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+            self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px}")
+            self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px}")
 
     def show(self):
         self.login_win.show()

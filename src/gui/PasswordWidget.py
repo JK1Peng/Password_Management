@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QWidget
 from src.gui.ui.ui_password_list_node import Ui_Form as Ui_password_list_node
 from src.database.user_controller import remove_password
 import pyperclip as pc
+from PyQt5 import QtGui
 
 
 class PasswordWidget:
@@ -15,6 +16,10 @@ class PasswordWidget:
         self.list_node = QWidget()
         self.widget = Ui_password_list_node()
         self.widget.setupUi(self.list_node)
+
+        copy_icon = QtGui.QIcon()
+        copy_icon.addPixmap(QtGui.QPixmap("../icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.widget.copy_button.setIcon(copy_icon)
 
         self.widget.label.setText(self.num)
         self.widget.label_2.setText(self.domain)

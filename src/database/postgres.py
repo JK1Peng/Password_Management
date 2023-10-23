@@ -8,8 +8,6 @@ from src.database.config import config
 Establishes a connection to the password database.
 """
 def connect():
-    conn = None
-
     try:
         params = config()                                       # get configuration parameters
         conn = psycopg2.connect(**params)                       # establish database connection
@@ -32,7 +30,6 @@ def execute_query(conn, query, args=None):
         cursor.execute(query)
     else:
         cursor.execute(query, args)
-    print(cursor.query.decode("utf-8"))
     results = cursor.fetchall()                                 # gather the results
     cursor.close()
     return results
