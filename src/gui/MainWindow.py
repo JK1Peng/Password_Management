@@ -1,3 +1,12 @@
+"""
+File: src/gui/MainWindow.py
+
+Author: Aaron Kersten, amk9398@rit.edu
+
+Description: The primary window that is displayed and used for the majority of
+    operation. Contains all the functionality that our application provides.
+"""
+
 import sys
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow

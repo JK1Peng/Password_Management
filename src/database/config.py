@@ -1,3 +1,10 @@
+"""
+File: src/database/config.py
+
+Description: Parses the database.ini file to retrieve authentication details
+    for the application's database.
+"""
+
 from configparser import ConfigParser
 
 

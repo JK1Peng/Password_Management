@@ -1,3 +1,12 @@
+"""
+File: src/database/postgres.py
+
+Author: Aaron Kersten, amk9398@rit.edu
+
+Description: Includes useful utility functions for using our project's
+    postgreSQL database hosted through AWS.
+"""
+
 import psycopg2
 from src.database.config import config
 

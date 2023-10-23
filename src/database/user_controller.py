@@ -1,3 +1,13 @@
+"""
+File: src/database/user_controller.py
+
+Author: Aaron Kersten, amk9398@rit.edu
+
+Description: Contains all functions and logic the GUI needs to interact with
+    the database, including login & signup functionality as well as updating
+    the user's password information.
+"""
+
 from src.database.postgres import connect, execute_query, execute_update
 import datetime
 

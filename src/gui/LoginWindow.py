@@ -1,5 +1,14 @@
-import sys
+"""
+File: src/gui/LoginWindow.py
 
+Author: Aaron Kersten, amk9398@rit.edu
+
+Description: The first window that shows up when the program is run. Prompts
+    the user for a username or password, or allows them the opportunity to make
+    an account with the system.
+"""
+
+import sys
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from src.gui.ui.ui_login_window import Ui_login_window
 from src.gui.MainWindow import MainWindow

@@ -1,3 +1,11 @@
+"""
+File: src/gui/PasswordWidget.py
+
+Author: Aaron Kersten, amk9398@rit.edu
+
+Description: A row in the display table containing each of the user's passwords.
+"""
+
 from PyQt5.QtWidgets import QWidget
 from src.gui.ui.ui_password_list_node import Ui_Form as Ui_password_list_node
 from src.database.user_controller import remove_password
