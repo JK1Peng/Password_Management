@@ -31,17 +31,17 @@ class LoginWindow:
         username = self.ui.username_field.text()
         password = self.ui.password_field.text()
         response = user_controller.login(username, password)
-        if response == 1:
-            self.main_win = MainWindow(response)
-            self.main_win.show()
-            self.login_win.close()
-        elif response == 0:
+        if response == 0:
             self.ui.username_field.clear()
             self.ui.password_field.clear()
             self.ui.username_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.password_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
         elif response == -2:
             print("User exceeded failed login attempts limit")
+        else:
+            self.main_win = MainWindow(response)
+            self.main_win.show()
+            self.login_win.close()
 
     def signup(self):
 

@@ -23,6 +23,16 @@ def login(username, password):
         # check that a password was returned
         if (len(master_password)) == 1:
 
+            # get number of failed logins for this username
+            num_failed_logins = execute_query(db, f"SELECT login_counter FROM users WHERE username = %(username)s;",
+                                              {"username": username})[0][0]
+            print(num_failed_logins)
+
+            # if number of failed logins exceeds 5, return error code -2
+            if num_failed_logins >= 5:
+                db.close()
+                return -2
+
             # if the passwords match, return the user id and close the connection
             if master_password[0][0] == password:
                 user_id = execute_query(db, f"SELECT user_id FROM users WHERE username = %(username)s;",
@@ -39,19 +49,11 @@ def login(username, password):
                 return user_id
 
             else:
-                # get number of failed logins for this username
-                num_failed_logins = execute_query(db, f"SELECT login_counter FROM users WHERE username = %(username)s;",
-                                                  {"username": username})[0][0]
-
-                # if number of failed logins exceeds 5, return error code -2
-                if num_failed_logins >= 5:
-                    db.close()
-                    return -2
-
-                # otherwise, increment num failed logins by one
+                # increment num failed logins by one
                 execute_update(db, f"UPDATE users SET login_counter = {num_failed_logins + 1} WHERE username = "
                                    f"%(username)s;", {"username": username})
 
+                # return error code 0 for failed login
                 db.close()
                 return 0
 
