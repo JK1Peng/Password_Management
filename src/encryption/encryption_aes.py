@@ -1,11 +1,11 @@
+#by jiakai
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Random import get_random_bytes
 import base64
-import bcrypt
 
-class AES:
+class AESmode:
     def __init__(self, key):
         self.key = key
 
@@ -42,27 +42,17 @@ class AES:
             return None 
 
 
-# Simulate user registration adding bcrypot
-# username = "example_user"
-# master_password = "123456" 
-# user_registration(username, master_password)
-# def hash_password(password):
-#     # Generate password hash with bcrypt.
-#     return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+# master_password = "123456"
+# # Generate a random salt each user
+# salt = get_random_bytes(16)
+# # use AES-256
+# key = PBKDF2(master_password, salt, 32)  
+# print(key)
 
-# def check_password(password, hashed):
-#     return bcrypt.checkpw(password.encode('utf-8'), hashed)
-
-master_password = "123456"
-# Generate a random salt each user
-salt = get_random_bytes(16)
-# use AES-256
-key = PBKDF2(master_password, salt, 32)  
-
-# test purpose
-aes_cipher = AES(key)
-data = "12345465" 
-encrypted = aes_cipher.encrypt(data)
-decrypted = aes_cipher.decrypt(encrypted)
-print(f"Encrypted data: {encrypted}")
-print(f"Decrypted data: {decrypted}")
+# # test purpose
+# aes_cipher = AESmode(key)
+# data = "12345465" 
+# encrypted = aes_cipher.encrypt(data)
+# decrypted = aes_cipher.decrypt(encrypted)
+# print(f"Encrypted data: {encrypted}")
+# print(f"Decrypted data: {decrypted}")
