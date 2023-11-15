@@ -17,25 +17,47 @@ import src.database.user_controller as user_controller
 
 class LoginWindow:
 
+    # initialize var for main window
+    main_win = None
+
     def __init__(self):
+        # create new login window
         self.login_win = QMainWindow()
         self.ui = Ui_login_window()
-        self.ui.setupUi(self.login_win)
-        self.main_win = None
 
+        # setup ui
+        self.ui.setupUi(self.login_win)
+
+        # set initial page
         self.to_login_page()
-        self.ui.label.hide()
+
+        # hide the sign up error label
+        self.ui.signup_error_label.hide()
+
+        # connect button actions
         self.ui.to_login_button.clicked.connect(self.to_login_page)
         self.ui.to_signup_button.clicked.connect(self.to_signup_page)
         self.ui.login_button.clicked.connect(self.login)
         self.ui.signup_button.clicked.connect(self.signup)
 
+    """
+    Set current 'stacked_widget' page to the login page.
+    """
     def to_login_page(self):
         self.ui.stacked_widget.setCurrentWidget(self.ui.login_page)
 
+    """
+    Set current 'stacked_widget' page to the sign-up page.
+    """
     def to_signup_page(self):
         self.ui.stacked_widget.setCurrentWidget(self.ui.sign_up_page)
 
+    """
+    Get username and password from text fields. Attempt to login to using
+    the given credentials. If the login is successful, close current window
+    and start a 'MainWindow' using the received 'user_id'. Highlight the 
+    text fields red upon failure. 
+    """
     def login(self):
         username = self.ui.username_field.text()
         password = self.ui.password_field.text()
@@ -52,8 +74,12 @@ class LoginWindow:
             self.main_win.show()
             self.login_win.close()
 
+    """
+    Get account credentials from text fields. Attempt to signup using those
+    credentials. If the signup is successful, proceed as a successful login.
+    If not, display relevant error message. 
+    """
     def signup(self):
-
         username = self.ui.username_field1.text()
         password = self.ui.password_field1.text()
         confirm = self.ui.confirm_field1.text()
@@ -61,8 +87,8 @@ class LoginWindow:
         if password == confirm:
             response = user_controller.sign_up(username, password, email)
             if response == 0:
-                self.ui.label.setText("*Username or email is already in use")
-                self.ui.label.show()
+                self.ui.signup_error_label.setText("*Username or email is already in use")
+                self.ui.signup_error_label.show()
                 self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
                 self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
                 self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px}")
@@ -72,13 +98,16 @@ class LoginWindow:
                 self.main_win.show()
                 self.login_win.close()
         else:
-            self.ui.label.setText("*Passwords do no match")
-            self.ui.label.show()
+            self.ui.signup_error_label.setText("*Passwords do no match")
+            self.ui.signup_error_label.show()
             self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px}")
             self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px}")
 
+    """
+    Show the login window.
+    """
     def show(self):
         self.login_win.show()
 

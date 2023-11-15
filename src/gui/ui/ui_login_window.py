@@ -68,9 +68,7 @@ class Ui_login_window(object):
         self.username_field = QtWidgets.QLineEdit(self.username_frame)
         self.username_field.setMinimumSize(QtCore.QSize(250, 25))
         self.username_field.setMaximumSize(QtCore.QSize(25, 16777215))
-        self.username_field.setStyleSheet("QLineEdit {\n"
-"    font: 15px;\n"
-"}")
+        self.username_field.setStyleSheet("QLineEdit {font: 15px}")
         self.username_field.setObjectName("username_field")
         self.horizontalLayout_2.addWidget(self.username_field)
         self.verticalLayout_2.addWidget(self.username_frame)
@@ -277,20 +275,20 @@ class Ui_login_window(object):
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_9.addItem(spacerItem6)
         self.verticalLayout_3.addWidget(self.email_frame1)
-        self.frame = QtWidgets.QFrame(self.sign_up_page)
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame)
+        self.signup_error_frame = QtWidgets.QFrame(self.sign_up_page)
+        self.signup_error_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.signup_error_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.signup_error_frame.setObjectName("signup_error_frame")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.signup_error_frame)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label = QtWidgets.QLabel(self.frame)
-        self.label.setStyleSheet("QLabel {\n"
+        self.signup_error_label = QtWidgets.QLabel(self.signup_error_frame)
+        self.signup_error_label.setStyleSheet("QLabel {\n"
 "    font: bold 12px;\n"
 "    color:#fa9487;\n"
 "}")
-        self.label.setObjectName("label")
-        self.verticalLayout_4.addWidget(self.label)
-        self.verticalLayout_3.addWidget(self.frame)
+        self.signup_error_label.setObjectName("signup_error_label")
+        self.verticalLayout_4.addWidget(self.signup_error_label)
+        self.verticalLayout_3.addWidget(self.signup_error_frame)
         self.bottom_frame1 = QtWidgets.QFrame(self.sign_up_page)
         self.bottom_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.bottom_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -344,7 +342,7 @@ class Ui_login_window(object):
         login_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(login_window)
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(login_window)
 
     def retranslateUi(self, login_window):
@@ -360,7 +358,7 @@ class Ui_login_window(object):
         self.password_label1.setText(_translate("login_window", "Password:*"))
         self.confirm_label1.setText(_translate("login_window", "Confirm Password:*"))
         self.email_label1.setText(_translate("login_window", "Email:*"))
-        self.label.setText(_translate("login_window", "*Username or email is already in use"))
+        self.signup_error_label.setText(_translate("login_window", "*Username or email is already in use"))
         self.to_login_button.setText(_translate("login_window", "Back to login"))
         self.signup_button.setText(_translate("login_window", "Sign Up"))
 

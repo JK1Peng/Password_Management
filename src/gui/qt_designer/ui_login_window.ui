@@ -51,7 +51,7 @@
        <string notr="true">background-color:#FDF8F5;</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="login_page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -150,7 +150,7 @@
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLineEdit {font: 15px;background-color:#fa9487}</string>
+              <string notr="true">QLineEdit {font: 15px}</string>
              </property>
             </widget>
            </item>
@@ -643,7 +643,7 @@ QPushButton:hover {
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame">
+         <widget class="QFrame" name="signup_error_frame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
@@ -652,7 +652,7 @@ QPushButton:hover {
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="signup_error_label">
              <property name="styleSheet">
               <string notr="true">QLabel {
 	font: bold 12px;

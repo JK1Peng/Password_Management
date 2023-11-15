@@ -87,6 +87,13 @@ class Ui_main_window(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.menu_password_button = QtWidgets.QPushButton(self.menu_password_frame)
         self.menu_password_button.setMinimumSize(QtCore.QSize(0, 60))
+        font = QtGui.QFont()
+        font.setFamily("MS Shell Dlg 2")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setWeight(75)
+        self.menu_password_button.setFont(font)
         self.menu_password_button.setStyleSheet("QPushButton {\n"
 "    color:#FDF8F5;\n"
 "    font: bold 20px;\n"
@@ -284,7 +291,7 @@ class Ui_main_window(object):
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.frame_2)
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setContentsMargins(15, 0, 0, 0)
         self.verticalLayout_7.setSpacing(5)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.header_frame = QtWidgets.QFrame(self.frame_2)
@@ -538,7 +545,7 @@ class Ui_main_window(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.scroll_contents = QtWidgets.QWidget()
-        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 671, 340))
+        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 656, 340))
         self.scroll_contents.setObjectName("scroll_contents")
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.scroll_contents)
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
@@ -796,7 +803,7 @@ class Ui_main_window(object):
         main_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(main_window)
-        self.stacked_widget.setCurrentIndex(4)
+        self.stacked_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):

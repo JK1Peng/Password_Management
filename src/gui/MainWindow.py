@@ -18,17 +18,20 @@ import src.database.user_controller as user_controller
 
 
 class MainWindow:
-    user_id = 1
+
+    # initialize vars for user id, and the user's list of passwords
+    user_id = None
     passwords = []
 
+    # button style css descriptions
     default_button_style1 = "QPushButton {color:#FDF8F5;font: bold 20px;border: 0;text-align:left;" \
                             "background: none;box-shadow:none;border-radius: 0px;background-color:#DDAF94;" \
-                            "padding-left:20px;}" \
+                            "padding-left:40px;}" \
                             "QPushButton:hover {background-color:#E8CEBF}"
 
     pressed_button_style1 = "QPushButton {color:#DDAF94;font: bold 20px;border: 0;text-align:left;" \
                             "background: none;box-shadow:none;border-radius: 0px;background-color:#FDF8F5;" \
-                            "padding-left:20px}" \
+                            "padding-left:40px}" \
                             "QPushButton:hover {background-color:#E8CEBF}"
 
     default_button_style2 = "QPushButton {color:#FDF8F5;font: bold 20px;border: 0;text-align:center;" \
@@ -40,63 +43,62 @@ class MainWindow:
                             "QPushButton:hover {background-color:#E8CEBF}"
 
     def __init__(self, user_id):
+        # initialize with session user id
         self.user_id = user_id
+
+        # create new main window
         self.main_win = QMainWindow()
         self.ui = Ui_main_window()
+
+        # setup ui
         self.ui.setupUi(self.main_win)
 
-        # init ui
+        # init icon elements
         self.ui.new_password_frame.hide()
         self.ui.add_error_frame.hide()
-        icon1 = QtGui.QIcon()
-        group_icon = QtGui.QIcon()
-        profile_icon = QtGui.QIcon()
-        password_icon = QtGui.QIcon()
-        settings_icon = QtGui.QIcon()
-        security_icon = QtGui.QIcon()
-        menu_icon = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("../icons/magnifying_glass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        group_icon.addPixmap(QtGui.QPixmap("../icons/group_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        profile_icon.addPixmap(QtGui.QPixmap("../icons/profile_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        password_icon.addPixmap(QtGui.QPixmap("../icons/password_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        settings_icon.addPixmap(QtGui.QPixmap("../icons/settings_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        security_icon.addPixmap(QtGui.QPixmap("../icons/security_icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        menu_icon.addPixmap(QtGui.QPixmap("../icons/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.ui.search_button.setIcon(icon1)
-        self.ui.menu_password_button.setIcon(password_icon)
-        self.ui.menu_group_button.setIcon(group_icon)
-        self.ui.menu_security_button.setIcon(security_icon)
-        self.ui.menu_profile_button.setIcon(profile_icon)
-        self.ui.menu_settings_button.setIcon(settings_icon)
-        self.ui.menu_toggle_button.setIcon(menu_icon)
+        self.icon1 = QtGui.QIcon()
+        self.group_icon = QtGui.QIcon()
+        self.profile_icon = QtGui.QIcon()
+        self.password_icon = QtGui.QIcon()
+        self.settings_icon = QtGui.QIcon()
+        self.security_icon = QtGui.QIcon()
+        self.menu_icon = QtGui.QIcon()
+        self.icon1.addPixmap(QtGui.QPixmap("../icons/magnifying_glass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.group_icon.addPixmap(QtGui.QPixmap("../icons/group_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.profile_icon.addPixmap(QtGui.QPixmap("../icons/profile_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.password_icon.addPixmap(QtGui.QPixmap("../icons/password_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.settings_icon.addPixmap(QtGui.QPixmap("../icons/settings_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.security_icon.addPixmap(QtGui.QPixmap("../icons/security_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menu_icon.addPixmap(QtGui.QPixmap("../icons/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.search_button.setIcon(self.icon1)
+        self.ui.menu_password_button.setIcon(self.password_icon)
+        self.ui.menu_group_button.setIcon(self.group_icon)
+        self.ui.menu_security_button.setIcon(self.security_icon)
+        self.ui.menu_profile_button.setIcon(self.profile_icon)
+        self.ui.menu_settings_button.setIcon(self.settings_icon)
+        self.ui.menu_toggle_button.setIcon(self.menu_icon)
 
-        # button actions
+        # connect button actions
         self.ui.menu_password_button.clicked.connect(self.switch_to_password_page)
         self.ui.menu_group_button.clicked.connect(self.switch_to_group_page)
         self.ui.menu_security_button.clicked.connect(self.switch_to_security_page)
         self.ui.menu_profile_button.clicked.connect(self.switch_to_profile_page)
         self.ui.menu_settings_button.clicked.connect(self.switch_to_settings_page)
-        self.ui.new_password_button.clicked.connect(self.new_password)
+        self.ui.new_password_button.clicked.connect(self.toggle_new_password_button)
         self.ui.add_password_button.clicked.connect(self.add_password)
         self.ui.search_button.clicked.connect(self.search_passwords)
+        self.ui.menu_toggle_button.clicked.connect(self.toggle_menu)
 
-        # setup
+        # set initial page
         self.switch_to_password_page()
+
+        # get passwords from database and update list
         self.passwords = user_controller.get_user_passwords(self.user_id)
         self.update_password_list_widget()
 
-    def update(self, message, *params):
-        if message == "switch page":
-            new_page = params[0]
-            if new_page == "password":
-                self.switch_to_password_page()
-            elif new_page == "group":
-                self.switch_to_group_page()
-        elif message == "add password":
-            pass
-        elif message == "remove password":
-            pass
-
+    """
+    Updates the rows of the password widget.
+    """
     def update_password_list_widget(self):
         self.ui.password_list.clear()
         for i, password in enumerate(self.passwords):
@@ -104,8 +106,11 @@ class MainWindow:
             account_name = password[1]
             url = password[2]
             _password = password[3]
-            self.append_password_list_widget(str(i+1), domain, account_name, url, _password)
+            self.append_password_list_widget(str(i + 1), domain, account_name, url, _password)
 
+    """
+    Adds row with given credentials to password list
+    """
     def append_password_list_widget(self, num, domain, account_name, url, _password):
         item = QListWidgetItem()
         password_widget = PasswordWidget(self.user_id, num, domain, account_name, url, _password)
@@ -113,39 +118,82 @@ class MainWindow:
         self.ui.password_list.addItem(item)
         self.ui.password_list.setItemWidget(item, password_widget.list_node)
 
+    """"
+    Reset all menu ui elements to default style.
+    """
     def reset_menu_buttons(self):
         self.ui.menu_group_button.setStyleSheet(self.default_button_style1)
         self.ui.menu_password_button.setStyleSheet(self.default_button_style1)
         self.ui.menu_security_button.setStyleSheet(self.default_button_style1)
         self.ui.menu_profile_button.setStyleSheet(self.default_button_style2)
         self.ui.menu_settings_button.setStyleSheet(self.default_button_style2)
+        self.ui.search_button.setIcon(self.icon1)
+        self.ui.menu_password_button.setIcon(self.password_icon)
+        self.ui.menu_group_button.setIcon(self.group_icon)
+        self.ui.menu_security_button.setIcon(self.security_icon)
+        self.ui.menu_profile_button.setIcon(self.profile_icon)
+        self.ui.menu_settings_button.setIcon(self.settings_icon)
+        self.ui.menu_toggle_button.setIcon(self.menu_icon)
 
+    """
+    Switch current 'self.stacked_widget' page to password page.
+    """
     def switch_to_password_page(self):
         self.reset_menu_buttons()
         self.ui.menu_password_button.setStyleSheet(self.pressed_button_style1)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icons/password_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.menu_password_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.password_page)
 
+    """
+    Switch current 'self.stacked_widget' page to group page.
+    """
     def switch_to_group_page(self):
         self.reset_menu_buttons()
         self.ui.menu_group_button.setStyleSheet(self.pressed_button_style1)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icons/group_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.menu_group_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.group_page)
 
+    """
+    Switch current 'self.stacked_widget' page to security page.
+    """
     def switch_to_security_page(self):
         self.reset_menu_buttons()
         self.ui.menu_security_button.setStyleSheet(self.pressed_button_style1)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icons/security_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.menu_security_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.security_page)
 
+    """
+    Switch current 'self.stacked_widget' page to profile page.
+    """
     def switch_to_profile_page(self):
         self.reset_menu_buttons()
         self.ui.menu_profile_button.setStyleSheet(self.pressed_button_style2)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icons/profile_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.menu_profile_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.profile_page)
 
+    """
+    Switch current 'self.stacked_widget' page to settings page.
+    """
     def switch_to_settings_page(self):
         self.reset_menu_buttons()
         self.ui.menu_settings_button.setStyleSheet(self.pressed_button_style2)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../icons/settings_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.ui.menu_settings_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.settings_page)
 
-    def new_password(self):
+    """
+    Toggle between drop down interface for creating new passwords.
+    """
+    def toggle_new_password_button(self):
         if self.ui.new_password_frame.isHidden():
             self.ui.new_password_frame.show()
             self.ui.new_password_button.setText("New ▼")
@@ -153,6 +201,10 @@ class MainWindow:
             self.ui.new_password_frame.hide()
             self.ui.new_password_button.setText("New ▲")
 
+    """
+    Get text field strings and use them with 'user_controller' to create 
+    a new password. Display error if pertinent.
+    """
     def add_password(self):
         domain = self.ui.domain_field.text()
         account_name = self.ui.account_field.text()
@@ -171,6 +223,9 @@ class MainWindow:
         elif response == 0:
             self.ui.add_error_frame.show()
 
+    """
+    Search for passwords. Send query to 'user_controller' to get new list.
+    """
     def search_passwords(self):
         query = self.ui.search_field.text().lower()
         response = user_controller.get_user_passwords(self.user_id, query)
@@ -180,6 +235,28 @@ class MainWindow:
             self.passwords = response
         self.update_password_list_widget()
 
+    """
+    Toggle menu sidebar size. 
+    """
+    def toggle_menu(self):
+        if self.ui.menu_frame.width() == 100:
+            self.ui.menu_frame.setFixedWidth(350)
+            self.ui.menu_password_button.setText(" Passwords")
+            self.ui.menu_security_button.setText(" Security")
+            self.ui.menu_group_button.setText(" Groups")
+            self.ui.menu_profile_button.setText("Profile")
+            self.ui.menu_settings_button.setText("Settings")
+        else:
+            self.ui.menu_frame.setFixedWidth(100)
+            self.ui.menu_password_button.setText("")
+            self.ui.menu_security_button.setText("")
+            self.ui.menu_group_button.setText("")
+            self.ui.menu_profile_button.setText("")
+            self.ui.menu_settings_button.setText("")
+
+    """
+    Show the main window.
+    """
     def show(self):
         self.main_win.show()
 

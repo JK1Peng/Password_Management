@@ -210,6 +210,15 @@ QPushButton:hover {
               <height>60</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <family>MS Shell Dlg 2</family>
+              <pointsize>-1</pointsize>
+              <weight>75</weight>
+              <italic>false</italic>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
 	color:#FDF8F5;
@@ -526,7 +535,7 @@ QPushButton:hover {
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>4</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="password_page">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -651,7 +660,7 @@ QPushButton:hover {
                <number>5</number>
               </property>
               <property name="leftMargin">
-               <number>0</number>
+               <number>15</number>
               </property>
               <property name="topMargin">
                <number>0</number>
@@ -1269,7 +1278,7 @@ QPushButton:hover {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>671</width>
+                   <width>656</width>
                    <height>340</height>
                   </rect>
                  </property>
