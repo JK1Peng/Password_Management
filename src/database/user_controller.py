@@ -18,7 +18,7 @@ import datetime
 @return: user_id for successful login
          0 for incorrect username or password
          -1 for a database connection error
-         -2 for incorrect login limit exceeded
+         -2 for unverified user
 
 Allows a user to authenticate themself with the database and establish a connection.
 """
@@ -27,24 +27,33 @@ def login(username, password):
     db = connect()
     if db is not None:
         # get master password for the current user
-        master_password = execute_query(db, "SELECT master_password FROM users WHERE username = %(username)s;",
+        query_response = execute_query(db, "SELECT master_password, verified FROM users WHERE username = %(username)s;",
                                         {"username": username})
 
         # check that a password was returned
-        if (len(master_password)) == 1:
+        if (len(query_response)) == 1:
+            master_password, verified = query_response[0]
+
+            # return error code -2 for unverified user
+            if not verified:
+                return -2
 
             # get number of failed logins for this username
             num_failed_logins = execute_query(db, f"SELECT login_counter FROM users WHERE username = %(username)s;",
                                               {"username": username})[0][0]
-            print(num_failed_logins)
 
             # if number of failed logins exceeds 5, return error code -2
             if num_failed_logins >= 5:
-                db.close()
+                # reset login counter
+                execute_update(db, f"UPDATE users SET login_counter = 0 WHERE username = %(username)s;",
+                               {"username": username})
+                # set verified to false
+                execute_update(db, f"UPDATE users SET verified = false WHERE username = %(username)s",
+                               {"username": username})
                 return -2
 
             # if the passwords match, return the user id and close the connection
-            if master_password[0][0] == password:
+            if master_password == password:
                 user_id = execute_query(db, f"SELECT user_id FROM users WHERE username = %(username)s;",
                                         {"username": username})[0][0]
 
@@ -54,6 +63,9 @@ def login(username, password):
 
                 # set user's failed login number to 0
                 execute_update(db, f"UPDATE users SET login_counter = 0 WHERE user_id = {user_id};")
+
+                # set verified to true
+                execute_update(db, f"UPDATE users SET verified = true WHERE user_id = {user_id};")
 
                 db.close()
                 return user_id
@@ -88,7 +100,7 @@ def login(username, password):
          
 Allows a user to make a new account and get their user id.
 """
-def sign_up(username, password, email):
+def sign_up(username, password, email, hint=None):
     # get database connection
     db = connect()
     if db is not None:
@@ -112,15 +124,19 @@ def sign_up(username, password, email):
         # get current timestamp
         ct = datetime.datetime.now()
 
+        # set hint to first four characters of the password
+        if hint is None:
+            hint = password[:min(4, len(password))] + "..."
+
         # add new user to the users table in the database
         execute_update(db, f"INSERT INTO users (username, master_password, email, created_datetime, "
-                           f"last_accessed_datetime) "
-                           f"VALUES (%(username)s, %(master_password)s, %(email)s, '{ct}', '{ct}');",
-                       {"username": username, "master_password": password, "email": email})
+                           f"last_accessed_datetime, hint) "
+                           f"VALUES (%(username)s, %(master_password)s, %(email)s, '{ct}', '{ct}', %(hint)s);",
+                       {"username": username, "master_password": password, "email": email, "hint": hint})
 
         # close connection and login to retrieve and return user_id
         db.close()
-        return login(username, password)
+        return 1
     else:
         print("Could not access the database while processing sign up request.")
 
@@ -226,7 +242,6 @@ def remove_password(user_id, domain, account_name):
     # get database connection
     db = connect()
     if db is not None:
-
         # remove password with given domain and account name from the repo
         execute_update(db, f"DELETE FROM passwords WHERE user_id = {user_id} AND domain = %(domain)s AND "
                            f"account_name = %(account_name)s;",
@@ -239,4 +254,145 @@ def remove_password(user_id, domain, account_name):
         print("Could not access the database while removing a password")
 
     # if a connection could not be established, return -1
+    return -1
+
+
+"""
+@param: user_id: user's id
+@param: username: user's username
+@return: 1 for successful removal
+         0 if both user_id and username are None
+         -1 for database connection error
+         
+Remove account for given user id or username.
+"""
+def remove_account(user_id=None, username=None):
+    db = connect()
+    if db is not None:
+        if username is None:
+            execute_update(db, f"DELETE FROM users WHERE user_id={user_id}")
+
+        elif user_id is None:
+            execute_update(db, f"DELETE FROM users WHERE username='{username}'")
+
+        else:
+            return 0
+
+        db.close()
+        return 1
+    else:
+        print("Could not access the database while removing account")
+
+    return -1
+
+
+"""
+@param: user_id: user's id
+@param: username: user's username
+@return: user's email upon successulf retrieval
+         0 if both user_id and username are None
+         -1 for database connection error
+         
+Get email for given user id or username
+"""
+def get_user_email(user_id=None, username=None):
+    db = connect()
+    if db is not None:
+        if username is None:
+            email = execute_query(db, f"SELECT email FROM users WHERE user_id={user_id}")[0][0]
+            db.close()
+            return email
+
+        elif user_id is None:
+            email = execute_query(db, f"SELECT email FROM users WHERE username=%(username)s",
+                                      {"username": username})[0][0]
+            db.close()
+            return email
+
+        db.close()
+        return 0
+    else:
+        print("Could not access the database while getting user email")
+
+    return -1
+
+
+"""
+@param: user_id: user's id
+@param: username: user's username
+@return: 1 for successful verification
+         0 if both user_id and username are None
+         -1 for database connection error
+         
+Set 'verified' to true for given user id or username
+"""
+def verify_user(user_id=None, username=None):
+    db = connect()
+    if db is not None:
+        if username is None:
+            execute_update(db, f"UPDATE users SET verified = true WHERE user_id={user_id}")
+
+        elif user_id is None:
+            execute_update(db, f"UPDATE users SET verified = true WHERE username='{username}'")
+
+        else:
+            db.close()
+            return 0
+
+        db.close()
+        return 1
+    else:
+        print("Could not access the database while verifying user")
+
+    return -1
+
+
+"""
+@param: username: user's username
+@param: email: user's email
+@return: 1 for successful match
+         0 for unsuccessful match
+         -1 for database connection error
+         
+Check that given username and email match.
+"""
+def check_user_email(username, email):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT * FROM users WHERE username = %(username)s AND email = %(email)s",
+                                 {"username": username, "email": email})
+
+        if len(response) > 0:
+            db.close()
+            return 1
+
+        return 0
+    else:
+        print("Could not access the database while checking user email")
+
+    return -1
+
+
+"""
+@param: username: user's username
+@return: hint upon successful retrieval
+         0 for unsuccessful retrieval
+         -1 for database connection error
+         
+Get user's password hint.
+"""
+def get_user_hint(username):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT hint FROM users WHERE username = %(username)s;",
+                                 {"username": username})
+
+        if len(response) > 0:
+            db.close()
+            return response[0][0]
+
+        return 0
+    else:
+        print("Could not access the database while getting user hint")
+
     return -1
