@@ -6,12 +6,14 @@ Description: Parses the database.ini file to retrieve authentication details
 """
 
 from configparser import ConfigParser
+import os
+from definitions import ROOT_DIR
 
 
 """
 Reads the database.ini and returns a dictionary with configuration info
 """
-def config(filename="../../database/database.ini", section="postgresql"):
+def config(filename=os.path.join(ROOT_DIR, "src", "database", "database.ini"), section="postgresql"):
     # create a parser
     parser = ConfigParser()
     # read config file

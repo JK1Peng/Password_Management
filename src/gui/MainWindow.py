@@ -69,13 +69,20 @@ class MainWindow:
         self.settings_icon = QtGui.QIcon()
         self.security_icon = QtGui.QIcon()
         self.menu_icon = QtGui.QIcon()
-        self.icon1.addPixmap(QtGui.QPixmap("../icons/magnifying_glass.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.group_icon.addPixmap(QtGui.QPixmap("../icons/group_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.profile_icon.addPixmap(QtGui.QPixmap("../icons/profile_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.password_icon.addPixmap(QtGui.QPixmap("../icons/password_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.settings_icon.addPixmap(QtGui.QPixmap("../icons/settings_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.security_icon.addPixmap(QtGui.QPixmap("../icons/security_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.menu_icon.addPixmap(QtGui.QPixmap("../icons/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.icon1.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "magnifying_glass.png")),
+                             QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.group_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "group_icon2.png")),
+                                  QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.profile_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "profile_icon1.png")),
+                                    QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.password_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "password_icon2.png")),
+                                     QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.settings_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "settings_icon1.png")),
+                                     QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.security_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "security_icon2.png")),
+                                     QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menu_icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "logo.png")),
+                                 QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.search_button.setIcon(self.icon1)
         self.ui.menu_password_button.setIcon(self.password_icon)
         self.ui.menu_group_button.setIcon(self.group_icon)
@@ -152,7 +159,8 @@ class MainWindow:
         self.reset_menu_buttons()
         self.ui.menu_password_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/password_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "password_icon1.png")),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_password_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.password_page)
 
@@ -163,7 +171,8 @@ class MainWindow:
         self.reset_menu_buttons()
         self.ui.menu_group_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/group_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "group_icon1.png")),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_group_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.group_page)
 
@@ -175,7 +184,8 @@ class MainWindow:
         self.reset_menu_buttons()
         self.ui.menu_security_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/security_icon1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "security_icon1.png")),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_security_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.security_page)
 
@@ -186,7 +196,8 @@ class MainWindow:
         self.reset_menu_buttons()
         self.ui.menu_profile_button.setStyleSheet(self.pressed_button_style2)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/profile_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "profile_icon2.png")),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_profile_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.profile_page)
 
@@ -197,7 +208,8 @@ class MainWindow:
         self.reset_menu_buttons()
         self.ui.menu_settings_button.setStyleSheet(self.pressed_button_style2)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../icons/settings_icon2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(ROOT_DIR, "src", "gui", "icons", "settings_icon2.png")),
+                       QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_settings_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.settings_page)
 

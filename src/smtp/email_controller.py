@@ -8,6 +8,8 @@ Description: Contains all functions and logic the GUI needs to send emails
 """
 
 from src.smtp.send_smtp import send
+import os
+from definitions import ROOT_DIR
 
 
 """
@@ -17,7 +19,7 @@ Get sending email credentials.
 """
 def get_credentials():
     credentials = []
-    with open("../../smtp/credentials") as file:
+    with open(os.path.join(ROOT_DIR, "src", "smtp", "credentials")) as file:
         for line in file:
             split_line = line.replace("\n", "").split(": ")
             credentials.append(split_line[1])
