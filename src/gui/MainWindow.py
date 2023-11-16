@@ -15,10 +15,12 @@ from PyQt5 import QtGui
 from src.gui.ui.ui_main_window import Ui_main_window
 from PasswordWidget import PasswordWidget
 import src.database.user_controller as user_controller
+import pandas as pd
+import os
+from definitions import ROOT_DIR
 
 
 class MainWindow:
-
     # initialize vars for user id, and the user's list of passwords
     user_id = None
     passwords = []
@@ -53,9 +55,13 @@ class MainWindow:
         # setup ui
         self.ui.setupUi(self.main_win)
 
-        # init icon elements
+        # hide some things
         self.ui.new_password_frame.hide()
         self.ui.add_error_frame.hide()
+        self.ui.export_loc_label.hide()
+        self.ui.import_error_label.hide()
+
+        # init icon elements
         self.icon1 = QtGui.QIcon()
         self.group_icon = QtGui.QIcon()
         self.profile_icon = QtGui.QIcon()
@@ -88,6 +94,8 @@ class MainWindow:
         self.ui.add_password_button.clicked.connect(self.add_password)
         self.ui.search_button.clicked.connect(self.search_passwords)
         self.ui.menu_toggle_button.clicked.connect(self.toggle_menu)
+        self.ui.export_button.clicked.connect(self.export_passwords)
+        self.ui.import_button.clicked.connect(self.import_passwords)
 
         # set initial page
         self.switch_to_password_page()
@@ -139,6 +147,8 @@ class MainWindow:
     Switch current 'self.stacked_widget' page to password page.
     """
     def switch_to_password_page(self):
+        self.passwords = user_controller.get_user_passwords(self.user_id)
+        self.update_password_list_widget()
         self.reset_menu_buttons()
         self.ui.menu_password_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
@@ -161,6 +171,7 @@ class MainWindow:
     Switch current 'self.stacked_widget' page to security page.
     """
     def switch_to_security_page(self):
+        self.ui.import_error_label.hide()
         self.reset_menu_buttons()
         self.ui.menu_security_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
@@ -253,6 +264,66 @@ class MainWindow:
             self.ui.menu_group_button.setText("")
             self.ui.menu_profile_button.setText("")
             self.ui.menu_settings_button.setText("")
+
+    """
+    Export user's passwords as csv to the project root directory.
+    """
+    def export_passwords(self):
+        # get passwords from user's repo
+        passwords = user_controller.get_user_passwords(self.user_id)
+
+        # compile data into columns
+        data = {
+            "name": [passwords[i][0] for i in range(len(passwords))],
+            "url": [passwords[i][2] for i in range(len(passwords))],
+            "username": [passwords[i][1] for i in range(len(passwords))],
+            "password": [passwords[i][3] for i in range(len(passwords))],
+            "note": ["" for i in range(len(passwords))]
+        }
+
+        # create dataframe and save to the root directory
+        df = pd.DataFrame(data)
+        loc = os.path.join(ROOT_DIR, "passwords.csv")
+        df.to_csv(loc, index=False)
+
+        # display location of file write
+        self.ui.export_loc_label.setText(f"Wrote to {loc}")
+        self.ui.export_loc_label.show()
+
+    """
+    Read in the csv file at the specified location. Add passwords info
+    to user's password database.
+    """
+    def import_passwords(self):
+        # get file name from text field
+        filename = self.ui.import_field.text()
+        try:
+            # read csv at file location
+            df = pd.read_csv(filename)
+
+            # convert everything to string
+            df = df.astype(str)
+
+            # get each column
+            names = df["name"].to_list()
+            urls = df["url"].to_list()
+            usernames = df["username"].to_list()
+            passwords = df["password"].to_list()
+
+            # add each password row to the database
+            for i in range(len(names)):
+                # if account_name or url are NaN, set to default
+                account_name = usernames[i] if usernames[i] != "nan" else ""
+                url = urls[i] if urls[i] != "nan" else ""
+                response = user_controller.add_password(self.user_id, names[i], passwords[i], account_name, url)
+
+        # if any error occurs, show error label
+        except Exception as e:
+            self.ui.import_error_label.show()
+            return
+
+        # hide error label
+        self.ui.import_error_label.hide()
 
     """
     Show the main window.
