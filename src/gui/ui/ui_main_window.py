@@ -88,7 +88,6 @@ class Ui_main_window(object):
         self.menu_password_button = QtWidgets.QPushButton(self.menu_password_frame)
         self.menu_password_button.setMinimumSize(QtCore.QSize(0, 60))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
         font.setPointSize(-1)
         font.setBold(True)
         font.setItalic(False)
@@ -448,7 +447,22 @@ class Ui_main_window(object):
         self.horizontalLayout_14.addWidget(self.password_field)
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_14.addItem(spacerItem6)
-        self.add_password_button = QtWidgets.QPushButton(self.password_frame)
+        self.verticalLayout_5.addWidget(self.password_frame)
+        self.add_error_frame = QtWidgets.QFrame(self.new_password_frame)
+        self.add_error_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.add_error_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.add_error_frame.setObjectName("add_error_frame")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.add_error_frame)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.add_error_label = QtWidgets.QLabel(self.add_error_frame)
+        self.add_error_label.setStyleSheet("QLabel {\n"
+"    font: bold 12px;\n"
+"    color:#fa9487;\n"
+"}")
+        self.add_error_label.setObjectName("add_error_label")
+        self.horizontalLayout_2.addWidget(self.add_error_label)
+        self.verticalLayout_5.addWidget(self.add_error_frame)
+        self.add_password_button = QtWidgets.QPushButton(self.new_password_frame)
         self.add_password_button.setMinimumSize(QtCore.QSize(160, 30))
         self.add_password_button.setMaximumSize(QtCore.QSize(160, 30))
         self.add_password_button.setStyleSheet("QPushButton {\n"
@@ -466,22 +480,7 @@ class Ui_main_window(object):
 "}\n"
 "")
         self.add_password_button.setObjectName("add_password_button")
-        self.horizontalLayout_14.addWidget(self.add_password_button)
-        self.verticalLayout_5.addWidget(self.password_frame)
-        self.add_error_frame = QtWidgets.QFrame(self.new_password_frame)
-        self.add_error_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.add_error_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.add_error_frame.setObjectName("add_error_frame")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.add_error_frame)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.add_error_label = QtWidgets.QLabel(self.add_error_frame)
-        self.add_error_label.setStyleSheet("QLabel {\n"
-"    font: bold 12px;\n"
-"    color:#fa9487;\n"
-"}")
-        self.add_error_label.setObjectName("add_error_label")
-        self.horizontalLayout_2.addWidget(self.add_error_label)
-        self.verticalLayout_5.addWidget(self.add_error_frame)
+        self.verticalLayout_5.addWidget(self.add_password_button)
         self.verticalLayout_7.addWidget(self.new_password_frame)
         self.line_2 = QtWidgets.QFrame(self.frame_2)
         self.line_2.setMinimumSize(QtCore.QSize(0, 2))
@@ -545,7 +544,7 @@ class Ui_main_window(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.scroll_contents = QtWidgets.QWidget()
-        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 656, 340))
+        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 656, 305))
         self.scroll_contents.setObjectName("scroll_contents")
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.scroll_contents)
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
@@ -744,24 +743,24 @@ class Ui_main_window(object):
         self.verticalLayout_18.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_18.setSpacing(0)
         self.verticalLayout_18.setObjectName("verticalLayout_18")
-        self.frame_9 = QtWidgets.QFrame(self.settings_page)
-        self.frame_9.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_9.setObjectName("frame_9")
-        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.frame_9)
+        self.settings_frame = QtWidgets.QFrame(self.settings_page)
+        self.settings_frame.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.settings_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.settings_frame.setObjectName("settings_frame")
+        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.settings_frame)
         self.verticalLayout_16.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_16.setSpacing(0)
         self.verticalLayout_16.setObjectName("verticalLayout_16")
-        self.frame_10 = QtWidgets.QFrame(self.frame_9)
-        self.frame_10.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_10.setLineWidth(0)
-        self.frame_10.setObjectName("frame_10")
-        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.frame_10)
+        self.settings_frame1 = QtWidgets.QFrame(self.settings_frame)
+        self.settings_frame1.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.settings_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.settings_frame1.setLineWidth(0)
+        self.settings_frame1.setObjectName("settings_frame1")
+        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.settings_frame1)
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
-        self.title_frame_5 = QtWidgets.QFrame(self.frame_10)
+        self.title_frame_5 = QtWidgets.QFrame(self.settings_frame1)
         self.title_frame_5.setMinimumSize(QtCore.QSize(0, 50))
         self.title_frame_5.setMaximumSize(QtCore.QSize(16777215, 50))
         self.title_frame_5.setStyleSheet("background-color:#266150")
@@ -785,7 +784,7 @@ class Ui_main_window(object):
         spacerItem15 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_19.addItem(spacerItem15)
         self.verticalLayout_17.addWidget(self.title_frame_5)
-        self.line_7 = QtWidgets.QFrame(self.frame_10)
+        self.line_7 = QtWidgets.QFrame(self.settings_frame1)
         self.line_7.setMinimumSize(QtCore.QSize(0, 3))
         self.line_7.setMaximumSize(QtCore.QSize(16777215, 3))
         self.line_7.setStyleSheet("background-color:#4F4846;")
@@ -793,17 +792,129 @@ class Ui_main_window(object):
         self.line_7.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_7.setObjectName("line_7")
         self.verticalLayout_17.addWidget(self.line_7)
+        self.export_frame = QtWidgets.QFrame(self.settings_frame1)
+        self.export_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.export_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.export_frame.setObjectName("export_frame")
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.export_frame)
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.export_frame1 = QtWidgets.QFrame(self.export_frame)
+        self.export_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.export_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.export_frame1.setObjectName("export_frame1")
+        self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.export_frame1)
+        self.horizontalLayout_20.setContentsMargins(-1, -1, 22, -1)
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.export_password_label = QtWidgets.QLabel(self.export_frame1)
+        self.export_password_label.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.export_password_label.setObjectName("export_password_label")
+        self.horizontalLayout_20.addWidget(self.export_password_label)
+        self.export_button = QtWidgets.QPushButton(self.export_frame1)
+        self.export_button.setMinimumSize(QtCore.QSize(120, 30))
+        self.export_button.setMaximumSize(QtCore.QSize(120, 30))
+        self.export_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}\n"
+"")
+        self.export_button.setObjectName("export_button")
+        self.horizontalLayout_20.addWidget(self.export_button)
+        self.verticalLayout_19.addWidget(self.export_frame1)
+        self.export_loc_label = QtWidgets.QLabel(self.export_frame)
+        self.export_loc_label.setStyleSheet("QLabel {\n"
+"    font: bold 12px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.export_loc_label.setObjectName("export_loc_label")
+        self.verticalLayout_19.addWidget(self.export_loc_label)
+        self.verticalLayout_17.addWidget(self.export_frame)
+        self.import_frame = QtWidgets.QFrame(self.settings_frame1)
+        self.import_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.import_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.import_frame.setObjectName("import_frame")
+        self.verticalLayout_20 = QtWidgets.QVBoxLayout(self.import_frame)
+        self.verticalLayout_20.setObjectName("verticalLayout_20")
+        self.import_frame1 = QtWidgets.QFrame(self.import_frame)
+        self.import_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.import_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.import_frame1.setObjectName("import_frame1")
+        self.verticalLayout_21 = QtWidgets.QVBoxLayout(self.import_frame1)
+        self.verticalLayout_21.setObjectName("verticalLayout_21")
+        self.import_label = QtWidgets.QLabel(self.import_frame1)
+        self.import_label.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.import_label.setObjectName("import_label")
+        self.verticalLayout_21.addWidget(self.import_label)
+        self.import_frame2 = QtWidgets.QFrame(self.import_frame1)
+        self.import_frame2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.import_frame2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.import_frame2.setObjectName("import_frame2")
+        self.horizontalLayout_21 = QtWidgets.QHBoxLayout(self.import_frame2)
+        self.horizontalLayout_21.setObjectName("horizontalLayout_21")
+        self.import_path_label = QtWidgets.QLabel(self.import_frame2)
+        self.import_path_label.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.import_path_label.setObjectName("import_path_label")
+        self.horizontalLayout_21.addWidget(self.import_path_label)
+        self.import_field = QtWidgets.QLineEdit(self.import_frame2)
+        self.import_field.setObjectName("import_field")
+        self.horizontalLayout_21.addWidget(self.import_field)
+        self.import_button = QtWidgets.QPushButton(self.import_frame2)
+        self.import_button.setMinimumSize(QtCore.QSize(120, 30))
+        self.import_button.setMaximumSize(QtCore.QSize(120, 30))
+        self.import_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}\n"
+"")
+        self.import_button.setObjectName("import_button")
+        self.horizontalLayout_21.addWidget(self.import_button)
+        self.verticalLayout_21.addWidget(self.import_frame2)
+        self.verticalLayout_20.addWidget(self.import_frame1)
+        self.import_error_label = QtWidgets.QLabel(self.import_frame)
+        self.import_error_label.setStyleSheet("QLabel {\n"
+"    font: bold 12px;\n"
+"    color:#fa9487;\n"
+"}")
+        self.import_error_label.setObjectName("import_error_label")
+        self.verticalLayout_20.addWidget(self.import_error_label)
+        self.verticalLayout_17.addWidget(self.import_frame)
         spacerItem16 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_17.addItem(spacerItem16)
-        self.verticalLayout_16.addWidget(self.frame_10)
-        self.verticalLayout_18.addWidget(self.frame_9)
+        self.verticalLayout_16.addWidget(self.settings_frame1)
+        self.verticalLayout_18.addWidget(self.settings_frame)
         self.stacked_widget.addWidget(self.settings_page)
         self.verticalLayout_2.addWidget(self.stacked_widget)
         self.horizontalLayout.addWidget(self.content_frame)
         main_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(main_window)
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -820,8 +931,8 @@ class Ui_main_window(object):
         self.account_label.setText(_translate("main_window", "Account Name:"))
         self.url_label.setText(_translate("main_window", "URL: "))
         self.password_label.setText(_translate("main_window", "Password:*"))
-        self.add_password_button.setText(_translate("main_window", "Add Password"))
         self.add_error_label.setText(_translate("main_window", "*A password with the same domain and account name already exists"))
+        self.add_password_button.setText(_translate("main_window", "Add Password"))
         self.col_domain_label.setText(_translate("main_window", "Domain"))
         self.col_url_label.setText(_translate("main_window", "URL"))
         self.col_account_label.setText(_translate("main_window", "Account Name"))
@@ -830,6 +941,13 @@ class Ui_main_window(object):
         self.title_label_2.setText(_translate("main_window", "Security"))
         self.title_label_4.setText(_translate("main_window", "Profile"))
         self.title_label_5.setText(_translate("main_window", "Settings"))
+        self.export_password_label.setText(_translate("main_window", "Export passwords to csv file"))
+        self.export_button.setText(_translate("main_window", "Download"))
+        self.export_loc_label.setText(_translate("main_window", "Downloaded to ./passwords.csv"))
+        self.import_label.setText(_translate("main_window", "Import csv file"))
+        self.import_path_label.setText(_translate("main_window", "Enter file path:"))
+        self.import_button.setText(_translate("main_window", "Import"))
+        self.import_error_label.setText(_translate("main_window", "Could not read the specified file. Verify it is a properly formatted csv file."))
 
 
 if __name__ == "__main__":

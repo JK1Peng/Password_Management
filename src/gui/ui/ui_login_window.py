@@ -31,7 +31,7 @@ class Ui_login_window(object):
         self.login_page.setObjectName("login_page")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.login_page)
         self.verticalLayout_2.setContentsMargins(11, -1, -1, -1)
-        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setSpacing(5)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.login_title_frame = QtWidgets.QFrame(self.login_page)
         self.login_title_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -72,7 +72,14 @@ class Ui_login_window(object):
         self.username_field.setObjectName("username_field")
         self.horizontalLayout_2.addWidget(self.username_field)
         self.verticalLayout_2.addWidget(self.username_frame)
-        self.password_frame = QtWidgets.QFrame(self.login_page)
+        self.password_frame2 = QtWidgets.QFrame(self.login_page)
+        self.password_frame2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.password_frame2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.password_frame2.setObjectName("password_frame2")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.password_frame2)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 5)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.password_frame = QtWidgets.QFrame(self.password_frame2)
         self.password_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.password_frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.password_frame.setObjectName("password_frame")
@@ -100,7 +107,24 @@ class Ui_login_window(object):
 "}")
         self.password_field.setObjectName("password_field")
         self.horizontalLayout_3.addWidget(self.password_field)
-        self.verticalLayout_2.addWidget(self.password_frame)
+        self.verticalLayout_7.addWidget(self.password_frame)
+        self.forgot_password_button = QtWidgets.QPushButton(self.password_frame2)
+        self.forgot_password_button.setStyleSheet("QPushButton {\n"
+"    color:blue;\n"
+"    font: bold 16px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    text-decoration: underline;\n"
+"}\n"
+"")
+        self.forgot_password_button.setObjectName("forgot_password_button")
+        self.verticalLayout_7.addWidget(self.forgot_password_button)
+        self.verticalLayout_2.addWidget(self.password_frame2)
         self.bottom_frame = QtWidgets.QFrame(self.login_page)
         self.bottom_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.bottom_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -144,11 +168,55 @@ class Ui_login_window(object):
         self.login_button.setObjectName("login_button")
         self.horizontalLayout_4.addWidget(self.login_button)
         self.verticalLayout_2.addWidget(self.bottom_frame)
+        self.login_verify_frame = QtWidgets.QFrame(self.login_page)
+        self.login_verify_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.login_verify_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.login_verify_frame.setObjectName("login_verify_frame")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.login_verify_frame)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.login_verify_label = QtWidgets.QLabel(self.login_verify_frame)
+        self.login_verify_label.setStyleSheet("QLabel {\n"
+"    font: bold 12px;\n"
+"    color:#fa9487;\n"
+"}")
+        self.login_verify_label.setObjectName("login_verify_label")
+        self.verticalLayout_6.addWidget(self.login_verify_label)
+        self.login_verify_send_frame = QtWidgets.QFrame(self.login_verify_frame)
+        self.login_verify_send_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.login_verify_send_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.login_verify_send_frame.setObjectName("login_verify_send_frame")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.login_verify_send_frame)
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem)
+        self.login_verify_button = QtWidgets.QPushButton(self.login_verify_send_frame)
+        self.login_verify_button.setMinimumSize(QtCore.QSize(200, 0))
+        self.login_verify_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.login_verify_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}")
+        self.login_verify_button.setObjectName("login_verify_button")
+        self.horizontalLayout_13.addWidget(self.login_verify_button)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem1)
+        self.verticalLayout_6.addWidget(self.login_verify_send_frame)
+        self.verticalLayout_2.addWidget(self.login_verify_frame)
         self.stacked_widget.addWidget(self.login_page)
         self.sign_up_page = QtWidgets.QWidget()
         self.sign_up_page.setStyleSheet("")
         self.sign_up_page.setObjectName("sign_up_page")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.sign_up_page)
+        self.verticalLayout_3.setSpacing(0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.signup_title_frame = QtWidgets.QFrame(self.sign_up_page)
         self.signup_title_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -163,8 +231,8 @@ class Ui_login_window(object):
 "}")
         self.signup_label.setObjectName("signup_label")
         self.horizontalLayout_5.addWidget(self.signup_label)
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem2)
         self.verticalLayout_3.addWidget(self.signup_title_frame)
         self.line = QtWidgets.QFrame(self.sign_up_page)
         self.line.setMinimumSize(QtCore.QSize(0, 2))
@@ -187,8 +255,8 @@ class Ui_login_window(object):
 "}")
         self.username_label1.setObjectName("username_label1")
         self.horizontalLayout_6.addWidget(self.username_label1)
-        spacerItem1 = QtWidgets.QSpacerItem(70, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_6.addItem(spacerItem1)
+        spacerItem3 = QtWidgets.QSpacerItem(70, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem3)
         self.username_field1 = QtWidgets.QLineEdit(self.username_frame1)
         self.username_field1.setMinimumSize(QtCore.QSize(300, 25))
         self.username_field1.setMaximumSize(QtCore.QSize(200, 25))
@@ -197,8 +265,8 @@ class Ui_login_window(object):
 "}")
         self.username_field1.setObjectName("username_field1")
         self.horizontalLayout_6.addWidget(self.username_field1)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_6.addItem(spacerItem2)
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem4)
         self.verticalLayout_3.addWidget(self.username_frame1)
         self.password_frame1 = QtWidgets.QFrame(self.sign_up_page)
         self.password_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -222,8 +290,8 @@ class Ui_login_window(object):
 "}")
         self.password_field1.setObjectName("password_field1")
         self.horizontalLayout_7.addWidget(self.password_field1)
-        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_7.addItem(spacerItem3)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem5)
         self.verticalLayout_3.addWidget(self.password_frame1)
         self.confirm_frame1 = QtWidgets.QFrame(self.sign_up_page)
         self.confirm_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -246,9 +314,46 @@ class Ui_login_window(object):
 "}")
         self.confirm_field1.setObjectName("confirm_field1")
         self.horizontalLayout_8.addWidget(self.confirm_field1)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_8.addItem(spacerItem4)
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem6)
         self.verticalLayout_3.addWidget(self.confirm_frame1)
+        self.hint_frame = QtWidgets.QFrame(self.sign_up_page)
+        self.hint_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_frame.setObjectName("hint_frame")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.hint_frame)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 11)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.hint_frame1 = QtWidgets.QFrame(self.hint_frame)
+        self.hint_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_frame1.setObjectName("hint_frame1")
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.hint_frame1)
+        self.horizontalLayout_14.setContentsMargins(-1, -1, -1, 5)
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.password_hint_label = QtWidgets.QLabel(self.hint_frame1)
+        self.password_hint_label.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.password_hint_label.setObjectName("password_hint_label")
+        self.horizontalLayout_14.addWidget(self.password_hint_label)
+        spacerItem7 = QtWidgets.QSpacerItem(44, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem7)
+        self.password_hint_field = QtWidgets.QLineEdit(self.hint_frame1)
+        self.password_hint_field.setObjectName("password_hint_field")
+        self.horizontalLayout_14.addWidget(self.password_hint_field)
+        spacerItem8 = QtWidgets.QSpacerItem(65, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem8)
+        self.verticalLayout_8.addWidget(self.hint_frame1)
+        self.default_hint_label = QtWidgets.QLabel(self.hint_frame)
+        self.default_hint_label.setStyleSheet("QLabel {\n"
+"    font: bold 12px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.default_hint_label.setObjectName("default_hint_label")
+        self.verticalLayout_8.addWidget(self.default_hint_label)
+        self.verticalLayout_3.addWidget(self.hint_frame)
         self.email_frame1 = QtWidgets.QFrame(self.sign_up_page)
         self.email_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.email_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -262,8 +367,8 @@ class Ui_login_window(object):
 "}")
         self.email_label1.setObjectName("email_label1")
         self.horizontalLayout_9.addWidget(self.email_label1)
-        spacerItem5 = QtWidgets.QSpacerItem(115, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem5)
+        spacerItem9 = QtWidgets.QSpacerItem(115, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem9)
         self.email_field1 = QtWidgets.QLineEdit(self.email_frame1)
         self.email_field1.setMinimumSize(QtCore.QSize(300, 25))
         self.email_field1.setMaximumSize(QtCore.QSize(200, 25))
@@ -272,8 +377,8 @@ class Ui_login_window(object):
 "}")
         self.email_field1.setObjectName("email_field1")
         self.horizontalLayout_9.addWidget(self.email_field1)
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem6)
+        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem10)
         self.verticalLayout_3.addWidget(self.email_frame1)
         self.signup_error_frame = QtWidgets.QFrame(self.sign_up_page)
         self.signup_error_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -296,8 +401,8 @@ class Ui_login_window(object):
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.bottom_frame1)
         self.horizontalLayout_10.setSpacing(100)
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_10.addItem(spacerItem7)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_10.addItem(spacerItem11)
         self.to_login_button = QtWidgets.QPushButton(self.bottom_frame1)
         self.to_login_button.setMinimumSize(QtCore.QSize(150, 30))
         self.to_login_button.setMaximumSize(QtCore.QSize(100, 30))
@@ -334,15 +439,179 @@ class Ui_login_window(object):
 "}")
         self.signup_button.setObjectName("signup_button")
         self.horizontalLayout_10.addWidget(self.signup_button)
-        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_10.addItem(spacerItem8)
+        spacerItem12 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_10.addItem(spacerItem12)
         self.verticalLayout_3.addWidget(self.bottom_frame1)
         self.stacked_widget.addWidget(self.sign_up_page)
+        self.verify_page = QtWidgets.QWidget()
+        self.verify_page.setObjectName("verify_page")
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.verify_page)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.verify_label_frame = QtWidgets.QFrame(self.verify_page)
+        self.verify_label_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.verify_label_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.verify_label_frame.setObjectName("verify_label_frame")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.verify_label_frame)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.verify_label = QtWidgets.QLabel(self.verify_label_frame)
+        self.verify_label.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.verify_label.setObjectName("verify_label")
+        self.horizontalLayout_11.addWidget(self.verify_label)
+        self.verticalLayout_5.addWidget(self.verify_label_frame)
+        self.frame_2 = QtWidgets.QFrame(self.verify_page)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_2.setObjectName("frame_2")
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.frame_2)
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.verify_code_field = QtWidgets.QLineEdit(self.frame_2)
+        self.verify_code_field.setStyleSheet("QLineEdit {\n"
+"    font: 15px;\n"
+"}")
+        self.verify_code_field.setObjectName("verify_code_field")
+        self.horizontalLayout_12.addWidget(self.verify_code_field)
+        self.verify_button = QtWidgets.QPushButton(self.frame_2)
+        self.verify_button.setMinimumSize(QtCore.QSize(100, 0))
+        self.verify_button.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.verify_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}")
+        self.verify_button.setObjectName("verify_button")
+        self.horizontalLayout_12.addWidget(self.verify_button)
+        spacerItem13 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_12.addItem(spacerItem13)
+        self.verify_cancel_button = QtWidgets.QPushButton(self.frame_2)
+        self.verify_cancel_button.setMinimumSize(QtCore.QSize(75, 0))
+        self.verify_cancel_button.setMaximumSize(QtCore.QSize(75, 16777215))
+        self.verify_cancel_button.setStyleSheet("QPushButton {\n"
+"    color:blue;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    text-decoration: underline;\n"
+"}\n"
+"")
+        self.verify_cancel_button.setObjectName("verify_cancel_button")
+        self.horizontalLayout_12.addWidget(self.verify_cancel_button)
+        self.verticalLayout_5.addWidget(self.frame_2)
+        self.stacked_widget.addWidget(self.verify_page)
+        self.hint_page = QtWidgets.QWidget()
+        self.hint_page.setObjectName("hint_page")
+        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.hint_page)
+        self.verticalLayout_16.setObjectName("verticalLayout_16")
+        self.hint_title_frame = QtWidgets.QFrame(self.hint_page)
+        self.hint_title_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_title_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_title_frame.setObjectName("hint_title_frame")
+        self.horizontalLayout_30 = QtWidgets.QHBoxLayout(self.hint_title_frame)
+        self.horizontalLayout_30.setObjectName("horizontalLayout_30")
+        self.hint_title_label = QtWidgets.QLabel(self.hint_title_frame)
+        self.hint_title_label.setStyleSheet("QLabel {\n"
+"    font: bold 30px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.hint_title_label.setObjectName("hint_title_label")
+        self.horizontalLayout_30.addWidget(self.hint_title_label)
+        self.verticalLayout_16.addWidget(self.hint_title_frame)
+        self.hint_username_frame = QtWidgets.QFrame(self.hint_page)
+        self.hint_username_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_username_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_username_frame.setObjectName("hint_username_frame")
+        self.horizontalLayout_31 = QtWidgets.QHBoxLayout(self.hint_username_frame)
+        self.horizontalLayout_31.setObjectName("horizontalLayout_31")
+        self.hint_username_label = QtWidgets.QLabel(self.hint_username_frame)
+        self.hint_username_label.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.hint_username_label.setObjectName("hint_username_label")
+        self.horizontalLayout_31.addWidget(self.hint_username_label)
+        self.hint_username_field = QtWidgets.QLineEdit(self.hint_username_frame)
+        self.hint_username_field.setStyleSheet("QLineEdit {font: 15px}")
+        self.hint_username_field.setObjectName("hint_username_field")
+        self.horizontalLayout_31.addWidget(self.hint_username_field)
+        self.verticalLayout_16.addWidget(self.hint_username_frame)
+        self.hint_email_frame = QtWidgets.QFrame(self.hint_page)
+        self.hint_email_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_email_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_email_frame.setObjectName("hint_email_frame")
+        self.horizontalLayout_32 = QtWidgets.QHBoxLayout(self.hint_email_frame)
+        self.horizontalLayout_32.setObjectName("horizontalLayout_32")
+        self.hint_email_label = QtWidgets.QLabel(self.hint_email_frame)
+        self.hint_email_label.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.hint_email_label.setObjectName("hint_email_label")
+        self.horizontalLayout_32.addWidget(self.hint_email_label)
+        self.hint_email_field = QtWidgets.QLineEdit(self.hint_email_frame)
+        self.hint_email_field.setStyleSheet("QLineEdit {font: 15px}")
+        self.hint_email_field.setObjectName("hint_email_field")
+        self.horizontalLayout_32.addWidget(self.hint_email_field)
+        self.verticalLayout_16.addWidget(self.hint_email_frame)
+        self.hint_button_frame = QtWidgets.QFrame(self.hint_page)
+        self.hint_button_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.hint_button_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.hint_button_frame.setObjectName("hint_button_frame")
+        self.horizontalLayout_33 = QtWidgets.QHBoxLayout(self.hint_button_frame)
+        self.horizontalLayout_33.setObjectName("horizontalLayout_33")
+        self.hint_back_button = QtWidgets.QPushButton(self.hint_button_frame)
+        self.hint_back_button.setStyleSheet("QPushButton {\n"
+"    color:blue;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    text-decoration: underline;\n"
+"}\n"
+"")
+        self.hint_back_button.setObjectName("hint_back_button")
+        self.horizontalLayout_33.addWidget(self.hint_back_button)
+        self.hint_send_button = QtWidgets.QPushButton(self.hint_button_frame)
+        self.hint_send_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}")
+        self.hint_send_button.setObjectName("hint_send_button")
+        self.horizontalLayout_33.addWidget(self.hint_send_button)
+        self.verticalLayout_16.addWidget(self.hint_button_frame)
+        self.stacked_widget.addWidget(self.hint_page)
         self.verticalLayout.addWidget(self.stacked_widget)
         login_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(login_window)
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(login_window)
 
     def retranslateUi(self, login_window):
@@ -351,16 +620,31 @@ class Ui_login_window(object):
         self.login_label.setText(_translate("login_window", "       Login:"))
         self.username_label.setText(_translate("login_window", "Username:"))
         self.password_label.setText(_translate("login_window", "Password:"))
+        self.forgot_password_button.setText(_translate("login_window", "Forgot password?"))
         self.to_signup_button.setText(_translate("login_window", "Sign Up"))
         self.login_button.setText(_translate("login_window", "Login"))
+        self.login_verify_label.setText(_translate("login_window", "This account is either new, or has exceeded the failed login counter. \n"
+"Press the button below to send a verification code to xxx@gmail.com"))
+        self.login_verify_button.setText(_translate("login_window", "Send"))
         self.signup_label.setText(_translate("login_window", "Sign Up:"))
         self.username_label1.setText(_translate("login_window", "Username:*"))
         self.password_label1.setText(_translate("login_window", "Password:*"))
         self.confirm_label1.setText(_translate("login_window", "Confirm Password:*"))
+        self.password_hint_label.setText(_translate("login_window", "Password Hint:"))
+        self.default_hint_label.setText(_translate("login_window", "(Default hint is the first four characters of the password)"))
         self.email_label1.setText(_translate("login_window", "Email:*"))
         self.signup_error_label.setText(_translate("login_window", "*Username or email is already in use"))
         self.to_login_button.setText(_translate("login_window", "Back to login"))
-        self.signup_button.setText(_translate("login_window", "Sign Up"))
+        self.signup_button.setText(_translate("login_window", "Sign up"))
+        self.verify_label.setText(_translate("login_window", "A verification code has been sent to xxx@gmail.com. \n"
+"Please enter it below to proceed. "))
+        self.verify_button.setText(_translate("login_window", "Verify"))
+        self.verify_cancel_button.setText(_translate("login_window", "Cancel"))
+        self.hint_title_label.setText(_translate("login_window", "Send a hint to verified email:"))
+        self.hint_username_label.setText(_translate("login_window", "Username:"))
+        self.hint_email_label.setText(_translate("login_window", "Email:"))
+        self.hint_back_button.setText(_translate("login_window", "Back to login"))
+        self.hint_send_button.setText(_translate("login_window", "Send Email"))
 
 
 if __name__ == "__main__":
