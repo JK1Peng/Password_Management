@@ -24,6 +24,7 @@ from src.gui.ui.ui_delete_widget import Ui_delete_widget
 from src.gui.ui.ui_dropdown_widget import Ui_dropdown
 from src.gui.ui.ui_category_widget import Ui_category_widget
 import pyperclip as pc
+import time
 
 
 class MainWindow:
@@ -129,9 +130,7 @@ class MainWindow:
     def update_password_list_widget(self):
         self.ui.password_list.setRowCount(0)
         for password in self.passwords:
-            domain, account_name, url, _password, category_id = password
-            category_name = user_controller.get_category_name(category_id)
-            color = user_controller.get_category_color(category_id)
+            domain, account_name, url, _password, category_name, color = password
             self.append_password_list_widget(domain, account_name, url, _password, category_name, color)
 
     """
@@ -428,7 +427,7 @@ class MainWindow:
         self.ui.category_list.clear()
         self.categories = user_controller.get_user_categories(self.user_id)
         for category in self.categories:
-            passwords = user_controller.get_category_passwords(category[0])
+            passwords = list(filter(lambda x: x[4] == category[1], self.passwords))
             self.append_category_list(category[1], passwords, category[2], category[0])
 
     """
@@ -447,7 +446,7 @@ class MainWindow:
         category_widget.category_table.setHorizontalHeaderItem(3, QTableWidgetItem("Password"))
         category_widget.category_table.setRowCount(0)
         for password in passwords:
-            domain, account_name, url, _password = password
+            domain, account_name, url, _password, name, id = password
             row_position = category_widget.category_table.rowCount()
             category_widget.category_table.insertRow(row_position)
             category_widget.category_table.setCellWidget(row_position, 0, self.create_label_widget(domain))
