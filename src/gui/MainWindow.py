@@ -26,6 +26,7 @@ from src.gui.ui.ui_category_widget import Ui_category_widget
 from src.passwords.password_strength import measure_password_strength
 from src.gui.ui.main_win import MainWindowFrame
 import pyperclip as pc
+from src.captcha.generate_captcha import generate_captcha
 
 
 class MainWindow:
@@ -125,6 +126,8 @@ class MainWindow:
 
         # set initial page
         self.switch_to_password_page()
+
+        generate_captcha("captcha.png")
 
     """
     Updates the rows of the password widget.

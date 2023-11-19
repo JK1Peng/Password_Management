@@ -525,7 +525,7 @@ class Ui_login_window(object):
         self.horizontalLayout_30.setObjectName("horizontalLayout_30")
         self.hint_title_label = QtWidgets.QLabel(self.hint_title_frame)
         self.hint_title_label.setStyleSheet("QLabel {\n"
-"    font: bold 30px;\n"
+"    font: bold 21px;\n"
 "    color:#4F4846;\n"
 "}")
         self.hint_title_label.setObjectName("hint_title_label")
@@ -607,11 +607,114 @@ class Ui_login_window(object):
         self.horizontalLayout_33.addWidget(self.hint_send_button)
         self.verticalLayout_16.addWidget(self.hint_button_frame)
         self.stacked_widget.addWidget(self.hint_page)
+        self.captcha_page = QtWidgets.QWidget()
+        self.captcha_page.setObjectName("captcha_page")
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.captcha_page)
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.captcha_page_frame = QtWidgets.QFrame(self.captcha_page)
+        self.captcha_page_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.captcha_page_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.captcha_page_frame.setObjectName("captcha_page_frame")
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.captcha_page_frame)
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.label = QtWidgets.QLabel(self.captcha_page_frame)
+        self.label.setStyleSheet("QLabel {\n"
+"    font: bold 20px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label.setObjectName("label")
+        self.verticalLayout_9.addWidget(self.label)
+        self.captcha_frame = QtWidgets.QFrame(self.captcha_page_frame)
+        self.captcha_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.captcha_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.captcha_frame.setObjectName("captcha_frame")
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout(self.captcha_frame)
+        self.horizontalLayout_16.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_16.setSpacing(10)
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        self.captcha_image_frame = QtWidgets.QFrame(self.captcha_frame)
+        self.captcha_image_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.captcha_image_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.captcha_image_frame.setObjectName("captcha_image_frame")
+        self.horizontalLayout_18 = QtWidgets.QHBoxLayout(self.captcha_image_frame)
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.captcha_label = QtWidgets.QLabel(self.captcha_image_frame)
+        self.captcha_label.setObjectName("captcha_label")
+        self.horizontalLayout_18.addWidget(self.captcha_label)
+        self.horizontalLayout_16.addWidget(self.captcha_image_frame)
+        self.refresh_button = QtWidgets.QPushButton(self.captcha_frame)
+        self.refresh_button.setMinimumSize(QtCore.QSize(75, 40))
+        self.refresh_button.setMaximumSize(QtCore.QSize(75, 40))
+        self.refresh_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 16px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#4F4846;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#857b79;\n"
+"}")
+        self.refresh_button.setObjectName("refresh_button")
+        self.horizontalLayout_16.addWidget(self.refresh_button)
+        self.verticalLayout_9.addWidget(self.captcha_frame)
+        self.captcha_bottom_frame = QtWidgets.QFrame(self.captcha_page_frame)
+        self.captcha_bottom_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.captcha_bottom_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.captcha_bottom_frame.setObjectName("captcha_bottom_frame")
+        self.horizontalLayout_17 = QtWidgets.QHBoxLayout(self.captcha_bottom_frame)
+        self.horizontalLayout_17.setObjectName("horizontalLayout_17")
+        self.captcha_cancel_button = QtWidgets.QPushButton(self.captcha_bottom_frame)
+        self.captcha_cancel_button.setStyleSheet("QPushButton {\n"
+"    color:blue;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    text-decoration: underline;\n"
+"}\n"
+"")
+        self.captcha_cancel_button.setObjectName("captcha_cancel_button")
+        self.horizontalLayout_17.addWidget(self.captcha_cancel_button)
+        spacerItem14 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_17.addItem(spacerItem14)
+        self.captcha_code_field = QtWidgets.QLineEdit(self.captcha_bottom_frame)
+        self.captcha_code_field.setStyleSheet("font: 18px;")
+        self.captcha_code_field.setObjectName("captcha_code_field")
+        self.horizontalLayout_17.addWidget(self.captcha_code_field)
+        self.captcha_send_button = QtWidgets.QPushButton(self.captcha_bottom_frame)
+        self.captcha_send_button.setMinimumSize(QtCore.QSize(75, 40))
+        self.captcha_send_button.setMaximumSize(QtCore.QSize(75, 40))
+        self.captcha_send_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}")
+        self.captcha_send_button.setObjectName("captcha_send_button")
+        self.horizontalLayout_17.addWidget(self.captcha_send_button)
+        self.verticalLayout_9.addWidget(self.captcha_bottom_frame)
+        self.horizontalLayout_15.addWidget(self.captcha_page_frame)
+        self.stacked_widget.addWidget(self.captcha_page)
         self.verticalLayout.addWidget(self.stacked_widget)
         login_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(login_window)
-        self.stacked_widget.setCurrentIndex(1)
+        self.stacked_widget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(login_window)
 
     def retranslateUi(self, login_window):
@@ -624,8 +727,8 @@ class Ui_login_window(object):
         self.to_signup_button.setText(_translate("login_window", "Sign Up"))
         self.login_button.setText(_translate("login_window", "Login"))
         self.login_verify_label.setText(_translate("login_window", "This account is either new, or has exceeded the failed login counter. \n"
-"Press the button below to send a verification code to xxx@gmail.com"))
-        self.login_verify_button.setText(_translate("login_window", "Send"))
+"Press the button below to send a verification code to your email address"))
+        self.login_verify_button.setText(_translate("login_window", "Proceed"))
         self.signup_label.setText(_translate("login_window", "Sign Up:"))
         self.username_label1.setText(_translate("login_window", "Username:*"))
         self.password_label1.setText(_translate("login_window", "Password:*"))
@@ -640,11 +743,18 @@ class Ui_login_window(object):
 "Please enter it below to proceed. "))
         self.verify_button.setText(_translate("login_window", "Verify"))
         self.verify_cancel_button.setText(_translate("login_window", "Cancel"))
-        self.hint_title_label.setText(_translate("login_window", "Send a hint to verified email:"))
+        self.hint_title_label.setText(_translate("login_window", "Verify your user name and email address \n"
+"before proceeding:"))
         self.hint_username_label.setText(_translate("login_window", "Username:"))
         self.hint_email_label.setText(_translate("login_window", "Email:"))
         self.hint_back_button.setText(_translate("login_window", "Back to login"))
-        self.hint_send_button.setText(_translate("login_window", "Send Email"))
+        self.hint_send_button.setText(_translate("login_window", "Enter"))
+        self.label.setText(_translate("login_window", "Type the characters in the image to the field below: \n"
+"Sending to xxx@gmail.com"))
+        self.captcha_label.setText(_translate("login_window", "TextLabel"))
+        self.refresh_button.setText(_translate("login_window", "Refresh"))
+        self.captcha_cancel_button.setText(_translate("login_window", "Cancel"))
+        self.captcha_send_button.setText(_translate("login_window", "Send"))
 
 
 if __name__ == "__main__":

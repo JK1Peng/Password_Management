@@ -9,12 +9,17 @@ Description: The first window that shows up when the program is run. Prompts
 """
 
 import sys
+
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from src.gui.ui.ui_login_window import Ui_login_window
 from src.gui.MainWindow import MainWindow
 import src.database.user_controller as user_controller
 import random
 from src.smtp.email_controller import send_verification_email, send_hint_email, get_credentials
+from src.captcha.generate_captcha import generate_captcha
+import os
+from definitions import ROOT_DIR
 
 
 class LoginWindow:
@@ -25,6 +30,7 @@ class LoginWindow:
     password = None
     username = None
     code = None
+    captcha_text = None
 
     def __init__(self):
         # create new login window
@@ -48,15 +54,18 @@ class LoginWindow:
         self.ui.signup_button.clicked.connect(self.signup)
         self.ui.verify_cancel_button.clicked.connect(self.cancel_verify)
         self.ui.verify_button.clicked.connect(self.verify_code)
-        self.ui.login_verify_button.clicked.connect(self.to_verify_page)
+        self.ui.login_verify_button.clicked.connect(lambda: self.to_hint_page(self.to_captcha_page, "Enter"))
         self.ui.hint_back_button.clicked.connect(self.to_login_page)
-        self.ui.forgot_password_button.clicked.connect(self.to_hint_page)
-        self.ui.hint_send_button.clicked.connect(self.send_hint)
+        self.ui.forgot_password_button.clicked.connect(lambda: self.to_hint_page(self.send_hint, "Send hint"))
+        self.ui.captcha_send_button.clicked.connect(lambda: self.check_captcha(self.to_verify_page))
+        self.ui.refresh_button.clicked.connect(self.regen_captcha)
 
     """
     Set current 'stacked_widget' page to the login page.
     """
     def to_login_page(self):
+        self.ui.username_field.setStyleSheet("QLineEdit {font: 15px}")
+        self.ui.password_field.setStyleSheet("QLineEdit {font: 15px}")
         self.ui.stacked_widget.setCurrentWidget(self.ui.login_page)
 
     """
@@ -72,12 +81,15 @@ class LoginWindow:
     def to_verify_page(self, email=None):
         # if email is not specified, get email based on used login username
         if not email:
-            username = self.ui.username_field.text()
+            username = self.ui.hint_username_field.text()
             email = user_controller.get_user_email(username=username)
 
             # if error returned, do not proceed
             if email == 0 or email == -1:
                 return
+
+        self.ui.verify_label.setText(f"A verification code has been sent to {email}. "
+                                     "\nPlease enter it below to proceed. ")
 
         # choose random number for the verification code
         self.code = str(random.randint(100, 999)) + str(random.randint(100, 999))
@@ -98,8 +110,14 @@ class LoginWindow:
     """
     Set current 'stacked_widget' page to the hint page.
     """
-    def to_hint_page(self):
+    def to_hint_page(self, redirect, button_label):
+        self.ui.hint_send_button.clicked.connect(redirect)
+        self.ui.hint_send_button.setText(button_label)
         self.ui.stacked_widget.setCurrentWidget(self.ui.hint_page)
+
+    def to_captcha_page(self):
+        self.regen_captcha()
+        self.ui.stacked_widget.setCurrentWidget(self.ui.captcha_page)
 
     """
     Remove attempted sign up account. Return to login page.
@@ -198,6 +216,20 @@ class LoginWindow:
         else:
             self.ui.hint_username_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.hint_email_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+
+    def regen_captcha(self):
+        file_location = os.path.join(ROOT_DIR, "src", "captcha", "captcha.png")
+        self.captcha_text = generate_captcha(file_location)
+        pixmap = QPixmap(file_location)
+        self.ui.captcha_label.setPixmap(pixmap)
+
+    def check_captcha(self, next_func):
+        print(self.captcha_text)
+        if self.ui.captcha_code_field.text() == self.captcha_text:
+            print("correct")
+            next_func()
+        else:
+            self.ui.captcha_code_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
 
     """
     Show the login window.

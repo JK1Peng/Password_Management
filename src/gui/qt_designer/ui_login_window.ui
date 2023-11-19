@@ -366,7 +366,7 @@ QPushButton:hover {
              </property>
              <property name="text">
               <string>This account is either new, or has exceeded the failed login counter. 
-Press the button below to send a verification code to xxx@gmail.com</string>
+Press the button below to send a verification code to your email address</string>
              </property>
             </widget>
            </item>
@@ -422,7 +422,7 @@ QPushButton:hover {
 }</string>
                 </property>
                 <property name="text">
-                 <string>Send</string>
+                 <string>Proceed</string>
                 </property>
                </widget>
               </item>
@@ -1172,12 +1172,13 @@ QPushButton:hover {
             <widget class="QLabel" name="hint_title_label">
              <property name="styleSheet">
               <string notr="true">QLabel {
-	font: bold 30px;
+	font: bold 21px;
 	color:#4F4846;
 }</string>
              </property>
              <property name="text">
-              <string>Send a hint to verified email:</string>
+              <string>Verify your user name and email address 
+before proceeding:</string>
              </property>
             </widget>
            </item>
@@ -1297,8 +1298,206 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Send Email</string>
+              <string>Enter</string>
              </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="captcha_page">
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <widget class="QFrame" name="captcha_page_frame">
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+	font: bold 20px;
+	color:#4F4846;
+}</string>
+             </property>
+             <property name="text">
+              <string>Type the characters in the image to the field below: 
+Sending to xxx@gmail.com</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="captcha_frame">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_16">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="captcha_image_frame">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
+                 <item>
+                  <widget class="QLabel" name="captcha_label">
+                   <property name="text">
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="refresh_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>75</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>75</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	color:#FDF8F5;
+	font: bold 16px;
+	 border: 0;
+	 background: none;
+	 box-shadow: none;
+	 border-radius: 5px;
+	background-color:#4F4846;
+}
+
+QPushButton:hover {
+	background-color:#857b79;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Refresh</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QFrame" name="captcha_bottom_frame">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_17">
+              <item>
+               <widget class="QPushButton" name="captcha_cancel_button">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	color:blue;
+	font: bold 20px;
+	 border: 0;
+	 background: none;
+	 box-shadow: none;
+	 border-radius: 5px;
+}
+
+QPushButton:hover {
+	text-decoration: underline;
+}
+</string>
+                </property>
+                <property name="text">
+                 <string>Cancel</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_15">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="captcha_code_field">
+                <property name="styleSheet">
+                 <string notr="true">font: 18px;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="captcha_send_button">
+                <property name="minimumSize">
+                 <size>
+                  <width>75</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>75</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	color:#FDF8F5;
+	font: bold 20px;
+	 border: 0;
+	 background: none;
+	 box-shadow: none;
+	 border-radius: 5px;
+	background-color:#266150;
+}
+
+QPushButton:hover {
+	background-color:#4e9480;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Send</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
