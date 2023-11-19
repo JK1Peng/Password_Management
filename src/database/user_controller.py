@@ -160,8 +160,10 @@ def get_user_passwords(user_id, query=""):
 
         # if no query is given, grab the entire password repo
         if query == "":
-            passwords = execute_query(db, f"SELECT domain, account_name, url, password, category_id FROM passwords "
-                                          f"WHERE user_id = {user_id};")
+            passwords = execute_query(db, "SELECT domain, account_name, url, password, category_name, color "
+                                          "FROM passwords "
+                                          "INNER JOIN categories on passwords.category_id = categories.category_id "
+                                          f"WHERE passwords.user_id = {user_id}")
 
         # otherwise, only grab entries with a domain, account name, or url like '...<query>...'
         else:

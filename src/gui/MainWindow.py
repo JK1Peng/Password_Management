@@ -23,8 +23,9 @@ from src.gui.ui.ui_label_field_widget import Ui_label_widget
 from src.gui.ui.ui_delete_widget import Ui_delete_widget
 from src.gui.ui.ui_dropdown_widget import Ui_dropdown
 from src.gui.ui.ui_category_widget import Ui_category_widget
+from src.passwords.password_strength import measure_password_strength
+from src.gui.ui.main_win import MainWindowFrame
 import pyperclip as pc
-import time
 
 
 class MainWindow:
@@ -32,6 +33,7 @@ class MainWindow:
     user_id = None
     passwords = []
     categories = []
+    category_widgets = []
 
     # button style css descriptions
     default_button_style1 = "QPushButton {color:#FDF8F5;font: bold 20px;border: 0;text-align:left;" \
@@ -57,7 +59,7 @@ class MainWindow:
         self.user_id = user_id
 
         # create new main window
-        self.main_win = QMainWindow()
+        self.main_win = MainWindowFrame(self.resizeEvent)
         self.ui = Ui_main_window()
 
         # setup ui
@@ -168,7 +170,7 @@ class MainWindow:
         copy_icon = QtGui.QIcon()
         copy_icon.addPixmap(QtGui.QPixmap("../icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         ui.copy_button.setIcon(copy_icon)
-        ui.password_label.setStyleSheet("QLabel {font: bold 12px;color:" + color + ";}")
+        ui.password_label.setStyleSheet("QLabel {font: 16px;color:" + color + ";}")
         ui.copy_button.clicked.connect(lambda: pc.copy(text))
         ui.password_label.setText(text)
         return widget
@@ -243,6 +245,7 @@ class MainWindow:
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_password_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.password_page)
+        self.resize_password_page()
 
     """
     Switch current 'self.stacked_widget' page to group page.
@@ -256,6 +259,7 @@ class MainWindow:
                        QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.ui.menu_group_button.setIcon(icon)
         self.ui.stacked_widget.setCurrentWidget(self.ui.group_page)
+        self.resize_group_page()
 
     """
     Switch current 'self.stacked_widget' page to security page.
@@ -425,6 +429,7 @@ class MainWindow:
     """
     def update_category_list(self):
         self.ui.category_list.clear()
+        self.category_widgets.clear()
         self.categories = user_controller.get_user_categories(self.user_id)
         for category in self.categories:
             passwords = list(filter(lambda x: x[4] == category[1], self.passwords))
@@ -464,6 +469,7 @@ class MainWindow:
         item.setSizeHint(category_widget.frame.sizeHint())
         self.ui.category_list.addItem(item)
         self.ui.category_list.setItemWidget(item, widget)
+        self.category_widgets.append(category_widget)
 
     """
     Create pop-up window for color picker. Save user's category color.
@@ -498,6 +504,32 @@ class MainWindow:
             self.update_category_list()
         else:
             self.ui.new_category_field.setStyleSheet("QLineEdit {font: 18px;background-color:#fa9487}")
+
+    """
+    Adjust dimensions of password tables on resize.
+    """
+    def resizeEvent(self):
+        if self.ui.stacked_widget.currentWidget().objectName() == "password_page":
+            self.resize_password_page()
+        elif self.ui.stacked_widget.currentWidget().objectName() == "group_page":
+            self.resize_group_page()
+
+    """
+    Resize the password page's password list.
+    """
+    def resize_password_page(self):
+        width = self.ui.frame_2.width() - 40
+        for i in range(6):
+            self.ui.password_list.setColumnWidth(i, width / 6)
+
+    """
+    Resize the group page's password list.
+    """
+    def resize_group_page(self):
+        width = self.ui.frame.width() - 75
+        for widget in self.category_widgets:
+            for i in range(4):
+                widget.category_table.setColumnWidth(i, width / 4)
 
     """
     Show the main window.

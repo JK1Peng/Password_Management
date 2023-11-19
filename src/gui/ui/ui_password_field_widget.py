@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.password_label = QtWidgets.QLabel(self.frame)
         self.password_label.setStyleSheet("QLabel {\n"
-"    font: bold 12px;\n"
+"    font: 16px;\n"
 "    color:#4F4846;\n"
 "}")
         self.password_label.setObjectName("password_label")

@@ -33,7 +33,7 @@ class Ui_label_widget(object):
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.label_4 = QtWidgets.QLabel(self.frame_8)
         self.label_4.setStyleSheet("QLabel {\n"
-"    font: bold 12px;\n"
+"    font: 16px;\n"
 "    color:#4F4846;\n"
 "}")
         self.label_4.setObjectName("label_4")
