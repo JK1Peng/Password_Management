@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(777, 45)
+        Form.resize(735, 45)
         Form.setMinimumSize(QtCore.QSize(0, 45))
         Form.setMaximumSize(QtCore.QSize(16777215, 45))
         self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
@@ -24,7 +24,10 @@ class Ui_Form(object):
         self.frame = QtWidgets.QFrame(Form)
         self.frame.setMinimumSize(QtCore.QSize(478, 45))
         self.frame.setMaximumSize(QtCore.QSize(16777215, 45))
-        self.frame.setStyleSheet("background-color:#FDF8F5")
+        self.frame.setStyleSheet("QFrame {\n"
+"background-color:#FDF8F5;\n"
+"}\n"
+"")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame.setObjectName("frame")

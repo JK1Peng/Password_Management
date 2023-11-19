@@ -8,22 +8,29 @@ Description: The primary window that is displayed and used for the majority of
 """
 
 import sys
-from PyQt5.QtWidgets import QApplication
+
+from PyQt5.QtWidgets import QApplication, QTableWidgetItem
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QListWidgetItem
 from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 from src.gui.ui.ui_main_window import Ui_main_window
-from PasswordWidget import PasswordWidget
 import src.database.user_controller as user_controller
 import pandas as pd
 import os
 from definitions import ROOT_DIR
+from src.gui.ui.ui_password_field_widget import Ui_Form
+from src.gui.ui.ui_label_field_widget import Ui_label_widget
+from src.gui.ui.ui_delete_widget import Ui_delete_widget
+from src.gui.ui.ui_dropdown_widget import Ui_dropdown
+from src.gui.ui.ui_category_widget import Ui_category_widget
+import pyperclip as pc
 
 
 class MainWindow:
-    # initialize vars for user id, and the user's list of passwords
+    # initialize vars for user id, the user's list of passwords and categories
     user_id = None
     passwords = []
+    categories = []
 
     # button style css descriptions
     default_button_style1 = "QPushButton {color:#FDF8F5;font: bold 20px;border: 0;text-align:left;" \
@@ -54,6 +61,14 @@ class MainWindow:
 
         # setup ui
         self.ui.setupUi(self.main_win)
+
+        # set password table header labels
+        self.ui.password_list.setHorizontalHeaderItem(0, QTableWidgetItem("Domain"))
+        self.ui.password_list.setHorizontalHeaderItem(1, QTableWidgetItem("URL"))
+        self.ui.password_list.setHorizontalHeaderItem(2, QTableWidgetItem("Account name"))
+        self.ui.password_list.setHorizontalHeaderItem(3, QTableWidgetItem("Category"))
+        self.ui.password_list.setHorizontalHeaderItem(4, QTableWidgetItem("Password"))
+        self.ui.password_list.setHorizontalHeaderItem(5, QTableWidgetItem(" "))
 
         # hide some things
         self.ui.new_password_frame.hide()
@@ -103,35 +118,96 @@ class MainWindow:
         self.ui.menu_toggle_button.clicked.connect(self.toggle_menu)
         self.ui.export_button.clicked.connect(self.export_passwords)
         self.ui.import_button.clicked.connect(self.import_passwords)
+        self.ui.new_category_button.clicked.connect(self.add_new_category)
 
         # set initial page
         self.switch_to_password_page()
-
-        # get passwords from database and update list
-        self.passwords = user_controller.get_user_passwords(self.user_id)
-        self.update_password_list_widget()
 
     """
     Updates the rows of the password widget.
     """
     def update_password_list_widget(self):
-        self.ui.password_list.clear()
-        for i, password in enumerate(self.passwords):
-            domain = password[0]
-            account_name = password[1]
-            url = password[2]
-            _password = password[3]
-            self.append_password_list_widget(str(i + 1), domain, account_name, url, _password)
+        self.ui.password_list.setRowCount(0)
+        for password in self.passwords:
+            domain, account_name, url, _password, category_id = password
+            category_name = user_controller.get_category_name(category_id)
+            color = user_controller.get_category_color(category_id)
+            self.append_password_list_widget(domain, account_name, url, _password, category_name, color)
 
     """
     Adds row with given credentials to password list
     """
-    def append_password_list_widget(self, num, domain, account_name, url, _password):
-        item = QListWidgetItem()
-        password_widget = PasswordWidget(self.user_id, num, domain, account_name, url, _password)
-        item.setSizeHint(password_widget.list_node.sizeHint())
-        self.ui.password_list.addItem(item)
-        self.ui.password_list.setItemWidget(item, password_widget.list_node)
+    def append_password_list_widget(self, domain, account_name, url, _password, category_name, color):
+        row_position = self.ui.password_list.rowCount()
+        self.ui.password_list.insertRow(row_position)
+        self.ui.password_list.setCellWidget(row_position, 0, self.create_label_widget(domain))
+        self.ui.password_list.setCellWidget(row_position, 1, self.create_label_widget(url))
+        self.ui.password_list.setCellWidget(row_position, 2, self.create_label_widget(account_name))
+        self.ui.password_list.setCellWidget(row_position, 3, self.create_label_widget(category_name))
+        self.ui.password_list.setCellWidget(row_position, 4, self.create_password_widget(_password, color))
+        self.ui.password_list.setCellWidget(row_position, 5, self.create_dropdown_widget(domain, account_name, row_position))
+
+    """
+    Create label widget for the password list.
+    """
+    @staticmethod
+    def create_label_widget(text):
+        label_widget = QtWidgets.QWidget()
+        ui = Ui_label_widget()
+        ui.setupUi(label_widget)
+        ui.label_4.setText(text)
+        return label_widget
+
+    """
+    Create widget with password label and copy button.
+    """
+    @staticmethod
+    def create_password_widget(text, color):
+        widget = QtWidgets.QWidget()
+        ui = Ui_Form()
+        ui.setupUi(widget)
+        copy_icon = QtGui.QIcon()
+        copy_icon.addPixmap(QtGui.QPixmap("../icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        ui.copy_button.setIcon(copy_icon)
+        ui.password_label.setStyleSheet("QLabel {font: bold 12px;color:" + color + ";}")
+        ui.copy_button.clicked.connect(lambda: pc.copy(text))
+        ui.password_label.setText(text)
+        return widget
+
+    """
+    Create delete button widget for the password list.
+    """
+    def create_delete_widget(self, domain, account_name, row):
+        delete_widget = QtWidgets.QWidget()
+        ui = Ui_delete_widget()
+        ui.setupUi(delete_widget)
+        ui.x_button.clicked.connect(lambda: self.delete_password(domain, account_name, row))
+        return delete_widget
+
+    """
+    Create the dropdown widget fro the password list.
+    """
+    def create_dropdown_widget(self, domain, account_name, row):
+        dropdown_widget = QtWidgets.QWidget()
+        ui = Ui_dropdown()
+        ui.setupUi(dropdown_widget)
+        ui.comboBox.addItems(["-", "Delete"])
+        ui.comboBox.activated[str].connect(lambda text: self.dropdown_action(text, domain, account_name, row))
+        return dropdown_widget
+
+    """
+    Perform action on dropdown click.
+    """
+    def dropdown_action(self, text, domain, account_name, row):
+        if text == "Delete":
+            self.delete_password(domain, account_name, row)
+
+    """
+    Delete a user's password (from both the table and the database).
+    """
+    def delete_password(self, domain, account_name, row):
+        user_controller.remove_password(self.user_id, domain, account_name)
+        self.ui.password_list.removeRow(row)
 
     """"
     Reset all menu ui elements to default style.
@@ -156,6 +232,11 @@ class MainWindow:
     def switch_to_password_page(self):
         self.passwords = user_controller.get_user_passwords(self.user_id)
         self.update_password_list_widget()
+        self.categories = user_controller.get_user_categories(self.user_id)
+        self.ui.p_category_dropdown.clear()
+        self.ui.p_category_dropdown.addItem("-")
+        for category in self.categories:
+            self.ui.p_category_dropdown.addItem(category[1])
         self.reset_menu_buttons()
         self.ui.menu_password_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
@@ -168,6 +249,7 @@ class MainWindow:
     Switch current 'self.stacked_widget' page to group page.
     """
     def switch_to_group_page(self):
+        self.update_category_list()
         self.reset_menu_buttons()
         self.ui.menu_group_button.setStyleSheet(self.pressed_button_style1)
         icon = QtGui.QIcon()
@@ -233,7 +315,8 @@ class MainWindow:
         account_name = self.ui.account_field.text()
         url = self.ui.url_field.text()
         password = self.ui.password_field.text()
-        response = user_controller.add_password(self.user_id, domain, password, account_name, url)
+        category = self.ui.p_category_dropdown.currentText()
+        response = user_controller.add_password(self.user_id, domain, password, account_name, url, category)
         if response == 1:
             self.ui.domain_field.clear()
             self.ui.account_field.clear()
@@ -257,6 +340,7 @@ class MainWindow:
         else:
             self.passwords = response
         self.update_password_list_widget()
+        print(self.passwords)
 
     """
     Toggle menu sidebar size. 
@@ -336,6 +420,85 @@ class MainWindow:
 
         # hide error label
         self.ui.import_error_label.hide()
+
+    """
+    Update the list of password categories.
+    """
+    def update_category_list(self):
+        self.ui.category_list.clear()
+        self.categories = user_controller.get_user_categories(self.user_id)
+        for category in self.categories:
+            passwords = user_controller.get_category_passwords(category[0])
+            self.append_category_list(category[1], passwords, category[2], category[0])
+
+    """
+    Add password category to category list.
+    """
+    def append_category_list(self, category_name, passwords, color, cat_id):
+        item = QtWidgets.QListWidgetItem()
+        widget = QtWidgets.QWidget()
+        category_widget = Ui_category_widget()
+        category_widget.setupUi(widget)
+        category_widget.category_name.setText("⏵ " + category_name)
+        category_widget.category_name.clicked.connect(lambda: self.toggle_category_table(category_widget, item))
+        category_widget.category_table.setHorizontalHeaderItem(0, QTableWidgetItem("Domain"))
+        category_widget.category_table.setHorizontalHeaderItem(1, QTableWidgetItem("URL"))
+        category_widget.category_table.setHorizontalHeaderItem(2, QTableWidgetItem("Account name"))
+        category_widget.category_table.setHorizontalHeaderItem(3, QTableWidgetItem("Password"))
+        category_widget.category_table.setRowCount(0)
+        for password in passwords:
+            domain, account_name, url, _password = password
+            row_position = category_widget.category_table.rowCount()
+            category_widget.category_table.insertRow(row_position)
+            category_widget.category_table.setCellWidget(row_position, 0, self.create_label_widget(domain))
+            category_widget.category_table.setCellWidget(row_position, 1, self.create_label_widget(url))
+            category_widget.category_table.setCellWidget(row_position, 2, self.create_label_widget(account_name))
+            category_widget.category_table.setCellWidget(row_position, 3, self.create_password_widget(_password, color))
+        category_widget.frame_2.hide()
+        category_widget.category_name.setStyleSheet("QPushButton {color:" + color + ";font: bold 20px;border: 0;"
+                                                    "background: none;box-shadow: none;border-radius: 5px;"
+                                                    "text-align:left;} QPushButton:hover {text-decoration: underline;}")
+        category_widget.color_button.setStyleSheet("QPushButton {border: 0;background: none;box-shadow: none;"
+                                                   "border-radius: 2px;background-color:" + color + ";} "
+                                                   "QPushButton:hover {border: 3px solid;}")
+        category_widget.color_button.clicked.connect(lambda: self.pick_color(cat_id))
+        item.setSizeHint(category_widget.frame.sizeHint())
+        self.ui.category_list.addItem(item)
+        self.ui.category_list.setItemWidget(item, widget)
+
+    """
+    Create pop-up window for color picker. Save user's category color.
+    """
+    def pick_color(self, cat_id):
+        color = QtWidgets.QColorDialog.getColor()
+        if color.isValid():
+            user_controller.change_category_color(cat_id, color.name())
+            self.update_category_list()
+
+    """
+    Toggle the visibility of the category password table.
+    """
+    def toggle_category_table(self, category_widget, item):
+        if category_widget.frame_2.isHidden():
+            category_widget.frame_2.show()
+            item.setSizeHint(category_widget.frame.sizeHint())
+            category_widget.category_name.setText("▼ " + category_widget.category_name.text()[2:])
+        else:
+            category_widget.frame_2.hide()
+            item.setSizeHint(category_widget.frame.sizeHint())
+            category_widget.category_name.setText("⏵ " + category_widget.category_name.text()[2:])
+
+    """
+    Add a new category to the user's profile.
+    """
+    def add_new_category(self):
+        category = self.ui.new_category_field.text()
+        response = user_controller.add_category(self.user_id, category)
+        if response == 1:
+            self.ui.new_category_field.setStyleSheet("QLineEdit {font: 18px;background-color:#ffffff}")
+            self.update_category_list()
+        else:
+            self.ui.new_category_field.setStyleSheet("QLineEdit {font: 18px;background-color:#fa9487}")
 
     """
     Show the main window.

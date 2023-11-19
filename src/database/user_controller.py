@@ -160,7 +160,7 @@ def get_user_passwords(user_id, query=""):
 
         # if no query is given, grab the entire password repo
         if query == "":
-            passwords = execute_query(db, f"SELECT domain, account_name, url, password FROM passwords "
+            passwords = execute_query(db, f"SELECT domain, account_name, url, password, category_id FROM passwords "
                                           f"WHERE user_id = {user_id};")
 
         # otherwise, only grab entries with a domain, account name, or url like '...<query>...'
@@ -196,7 +196,7 @@ def get_user_passwords(user_id, query=""):
 
 Adds a password the user's password repo.
 """
-def add_password(user_id, domain, password, account_name="", url=""):
+def add_password(user_id, domain, password, account_name="", url="", category=""):
     # get database connection
     db = connect()
     if db is not None:
@@ -210,13 +210,20 @@ def add_password(user_id, domain, password, account_name="", url=""):
             db.close()
             return 0
 
+        if category == "-":
+            category_id = 0
+        else:
+            category_id = execute_query(db, f"SELECT category_id FROM categories WHERE category_name = %(category)s "
+                                            f"AND user_id = {user_id};",
+                                        {"category": category})[0][0]
+
         # get current timestamp
         ct = datetime.datetime.now()
 
         # add new password to user's password repo
         execute_update(db, f"INSERT INTO passwords (user_id, domain, account_name, url, password, created_datetime, "
-                           f"last_modified_datetime) VALUES ({user_id}, %(domain)s, %(account_name)s, %(url)s,"
-                           f"%(password)s, '{ct}', '{ct}');",
+                           f"last_modified_datetime, category_id) VALUES ({user_id}, %(domain)s, %(account_name)s, "
+                           f"%(url)s, %(password)s, '{ct}', '{ct}', {category_id});",
                            {"domain": domain, "account_name": account_name, "url": url, "password": password})
 
         # upon successful insert, close connection and return 1
@@ -394,5 +401,128 @@ def get_user_hint(username):
         return 0
     else:
         print("Could not access the database while getting user hint")
+
+    return -1
+
+
+"""
+@param: user_id: user's id
+@param: category_name: password category name
+@return: 1 for successful add
+         0 for attempt to add duplicate category
+         -1 for database error
+         
+Add password category for a user.
+"""
+def add_category(user_id, category_name):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT * FROM categories WHERE user_id = {user_id} "
+                                     f"AND category_name = %(category)s;",
+                                 {"category": category_name})
+        if len(response) != 0:
+            print("add cat response", response)
+            db.close()
+            return 0
+
+        execute_update(db, f"INSERT INTO categories (user_id, category_name) VALUES ({user_id}, %(category)s);",
+                       {"category": category_name})
+        db.close()
+        return 1
+    else:
+        print("Could not access the database adding category")
+
+    return -1
+
+
+"""
+@param: user_id: user's id
+@return: list of user categories
+         -1 for database error
+         
+Get list of user's password categories.
+"""
+def get_user_categories(user_id):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT category_id, category_name, color FROM categories "
+                                     f"WHERE user_id = {user_id} AND category_id != 0;")
+        db.close()
+        return response
+    else:
+        print("Could not access the database while getting user categories")
+
+    return -1
+
+
+"""
+@param: category_id: password category id
+@return: list of passwords
+         -1 for database error
+         
+Get list of passwords for a category.
+"""
+def get_category_passwords(category_id):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT domain, account_name, url, password from passwords WHERE category_id = {category_id}")
+        db.close()
+        return response
+    else:
+        print("Could not access the database while getting category passwords")
+
+    return -1
+
+
+"""
+@param: category_id: password category id
+@param: color: hex color string
+@return: 1 for successful update
+         -1 for database error
+         
+Change a password category's color.
+"""
+def change_category_color(category_id, color):
+    db = connect()
+    if db is not None:
+        execute_update(db, f"UPDATE categories SET color = '{color}' WHERE category_id = {category_id};")
+        return 1
+    else:
+        print("Could not access the database while changing category color")
+
+    return -1
+
+
+"""
+@param: category_id: password category's id
+@return: category name,
+         -1 for database error
+         
+Get name of password category.
+"""
+def get_category_name(category_id):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT category_name FROM categories WHERE category_id = {category_id};")
+        return response[0][0]
+    else:
+        print("Could not access the database while getting category name")
+
+    return -1
+
+"""
+@param: category_id: password category's id
+@return: category color,
+         -1 for database error
+         
+Get hex color for password category.
+"""
+def get_category_color(category_id):
+    db = connect()
+    if db is not None:
+        response = execute_query(db, f"SELECT color FROM categories WHERE category_id = {category_id};")
+        return response[0][0]
+    else:
+        print("Could not access the database while getting category color")
 
     return -1
