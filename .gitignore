@@ -1,1 +1,2 @@
-database.ini
+src/database/database.ini
+src/smtp/credentials

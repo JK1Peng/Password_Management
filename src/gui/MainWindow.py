@@ -7,10 +7,7 @@ Description: The primary window that is displayed and used for the majority of
     operation. Contains all the functionality that our application provides.
 """
 
-import sys
-
 from PyQt5.QtWidgets import QApplication, QTableWidgetItem
-from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from src.gui.ui.ui_main_window import Ui_main_window
@@ -28,7 +25,7 @@ from src.gui.ui.main_win import MainWindowFrame
 from src.gui.ui.ui_button_widget import Ui_button_widget
 from src.gui.ui.ui_label_edit import Ui_text_field_widget
 import pyperclip as pc
-from src.captcha.generate_captcha import generate_captcha
+from src.encryption.key_gen import PasswordGenerator
 
 
 class MainWindow:
@@ -38,6 +35,10 @@ class MainWindow:
     categories = []
     category_widgets = []
     edit_fields = []
+
+    username = None
+    email = None
+    created_account = None
 
     # button style css descriptions
     default_button_style1 = "QPushButton {color:#FDF8F5;font: bold 20px;border: 0;text-align:left;" \
@@ -134,11 +135,15 @@ class MainWindow:
         self.ui.import_button.clicked.connect(self.import_passwords)
         self.ui.new_category_button.clicked.connect(self.add_new_category)
         self.ui.run_security_button.clicked.connect(self.run_security_check)
+        self.ui.generate_button.clicked.connect(self.generate_password)
 
         # set initial page
         self.switch_to_password_page()
 
-        generate_captcha("captcha.png")
+        self.username, self.email, self.created_account = user_controller.get_account_info(self.user_id)
+        self.ui.profile_username_label.setText(f"Username: {self.username}")
+        self.ui.profile_email_label.setText(f"Email: {self.email}")
+        self.ui.profile_created_label.setText(f"Created Account: {str(self.created_account).split(' ')[0]}")
 
     """
     Updates the rows of the password widget.
@@ -147,13 +152,13 @@ class MainWindow:
         self.ui.password_list.setRowCount(0)
         for i, password in enumerate(self.passwords):
             domain, account_name, url, _password, category_name, color, entry_id = password
-            # category_id = list(filter(lambda x: x[0] == category_name, self.categories))[0]
             self.append_password_list_widget(domain, account_name, url, _password, category_name, color, entry_id, 0)
 
     """
     Adds row with given credentials to password list
     """
-    def append_password_list_widget(self, domain, account_name, url, _password, category_name, color, entry_id, category_id):
+    def append_password_list_widget(self, domain, account_name, url, _password, category_name, color,
+                                    entry_id, category_id):
         row_position = self.ui.password_list.rowCount()
         self.ui.password_list.insertRow(row_position)
         self.ui.password_list.setCellWidget(row_position, 0, self.create_label_widget(domain, color))
@@ -161,10 +166,10 @@ class MainWindow:
         self.ui.password_list.setCellWidget(row_position, 2, self.create_label_widget(account_name, color))
         self.ui.password_list.setCellWidget(row_position, 3, self.create_label_widget(category_name, color))
         self.ui.password_list.setCellWidget(row_position, 4, self.create_password_widget(_password, color))
-        self.ui.password_list.setCellWidget(row_position, 5, self.create_dropdown_widget(domain, account_name, url,
-                                                                                         _password, category_name,
-                                                                                         row_position, entry_id,
-                                                                                         category_id))
+        self.ui.password_list.setCellWidget(row_position, 5,
+                                            self.create_dropdown_widget(domain, account_name, url, _password,
+                                                                        category_name, row_position, entry_id,
+                                                                        category_id))
 
     """
     Create label widget for the password list.
@@ -217,6 +222,9 @@ class MainWindow:
                                                                              category, entry_id, row, category_id))
         return dropdown_widget
 
+    """
+    Create editable dropdown widget.
+    """
     def create_dropdown_edit(self, text):
         dropdown_widget = QtWidgets.QWidget()
         ui = Ui_dropdown()
@@ -227,6 +235,9 @@ class MainWindow:
         self.edit_fields.append(ui.comboBox)
         return dropdown_widget
 
+    """
+    Create editable label widget.
+    """
     def create_line_edit_widget(self, text):
         line_edit_widget = QtWidgets.QWidget()
         ui = Ui_text_field_widget()
@@ -235,6 +246,9 @@ class MainWindow:
         self.edit_fields.append(ui.label_edit)
         return line_edit_widget
 
+    """
+    Create a button widget.
+    """
     def create_button_widget(self, entry_id, category):
         button_widget = QtWidgets.QWidget()
         ui = Ui_button_widget()
@@ -260,12 +274,18 @@ class MainWindow:
         user_controller.remove_password(self.user_id, domain, account_name)
         self.ui.password_list.removeRow(row)
 
+    """
+    Toggle between hidden and viewable passwords
+    """
     def toggle_password_hide(self, button, text):
         if button.text() == "*******":
             button.setText(text)
         else:
             button.setText("*******")
 
+    """
+    Change password row to editable fields.
+    """
     def edit_password_row(self, domain, account_name, url, password, category, entry_id, row, category_id):
         self.ui.password_list.setCellWidget(row, 0, self.create_line_edit_widget(domain))
         self.ui.password_list.setCellWidget(row, 1, self.create_line_edit_widget(url))
@@ -274,12 +294,14 @@ class MainWindow:
         self.ui.password_list.setCellWidget(row, 4, self.create_line_edit_widget(password))
         self.ui.password_list.setCellWidget(row, 5, self.create_button_widget(entry_id, category))
 
+    """
+    Submit the results of the edit to the user controller.
+    """
     def submit_password_edit(self, entry_id, category):
         self.passwords = user_controller.update_user_password(self.user_id, entry_id, self.edit_fields[0].text(),
                                                               self.edit_fields[1].text(), self.edit_fields[2].text(),
                                                               self.edit_fields[3].currentText(), self.edit_fields[4].text())
         self.update_password_list_widget()
-
 
     """"
     Reset all menu ui elements to default style.
@@ -415,7 +437,6 @@ class MainWindow:
         else:
             self.passwords = response
         self.update_password_list_widget()
-        print(self.passwords)
 
     """
     Toggle menu sidebar size. 
@@ -486,7 +507,7 @@ class MainWindow:
                 # if account_name or url are NaN, set to default
                 account_name = usernames[i] if usernames[i] != "nan" else ""
                 url = urls[i] if urls[i] != "nan" else ""
-                response = user_controller.add_password(self.user_id, names[i], passwords[i], account_name, url)
+                user_controller.add_password(self.user_id, names[i], passwords[i], account_name, url)
 
         # if any error occurs, show error label
         except Exception as e:
@@ -605,11 +626,17 @@ class MainWindow:
             for i in range(4):
                 widget.category_table.setColumnWidth(i, int(width / 4))
 
+    """
+    Resize the security page's password list.
+    """
     def resize_security_page(self):
         width = self.ui.frame_10.width() - 60
         for i in range(6):
             self.ui.security_table.setColumnWidth(i, int(width / 6))
 
+    """
+    Perform a security check on the user's passwords and display the results.
+    """
     def run_security_check(self):
         self.ui.security_table.setRowCount(0)
         for password in self.passwords:
@@ -624,7 +651,7 @@ class MainWindow:
                     score_color = "orange"
                 else:
                     score_label = "Somewhat weak"
-                    score_color = "yellow"
+                    score_color = "#ccbc0e"
                 row_position = self.ui.security_table.rowCount()
                 self.ui.security_table.insertRow(row_position)
                 self.ui.security_table.setCellWidget(row_position, 0, self.create_label_widget(domain))
@@ -635,14 +662,15 @@ class MainWindow:
                 self.ui.security_table.setCellWidget(row_position, 5, self.create_label_widget(score_label, score_color))
 
     """
+    Automatically generate a password for the user.
+    """
+    def generate_password(self):
+        pgen = PasswordGenerator(15)
+        password = pgen.generate()
+        self.ui.password_field.setText(password)
+
+    """
     Show the main window.
     """
     def show(self):
         self.main_win.show()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main_win = MainWindow(24)
-    main_win.show()
-    sys.exit(app.exec_())

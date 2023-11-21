@@ -14,8 +14,9 @@ from PyQt5 import QtGui
 
 
 class PasswordWidget:
-    def __init__(self, user_id, num, domain, account_name, url, password):
+    def __init__(self, width, user_id, num, domain, account_name, url, password):
         self.user_id = user_id
+        self.width = width
         self.num = num
         self.domain = domain
         self.account_name = account_name
@@ -28,6 +29,8 @@ class PasswordWidget:
         copy_icon = QtGui.QIcon()
         copy_icon.addPixmap(QtGui.QPixmap("../icons/copy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.widget.copy_button.setIcon(copy_icon)
+
+        # self.fix_node_format()
 
         self.widget.label.setText(self.num)
         self.widget.label_2.setText(self.domain)
@@ -44,3 +47,12 @@ class PasswordWidget:
 
     def copy_password(self):
         pc.copy(self.widget.label_5.text())
+
+    def fix_node_format(self):
+        label_width = (self.width - 119) / 4
+        if label_width < 0:
+            label_width = 135
+        self.widget.frame_4.setFixedWidth(label_width)
+        self.widget.frame_6.setFixedWidth(label_width)
+        self.widget.frame_7.setFixedWidth(label_width)
+        self.widget.frame_8.setFixedWidth(label_width)

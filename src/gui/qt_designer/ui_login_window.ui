@@ -51,7 +51,7 @@
        <string notr="true">background-color:#FDF8F5;</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="login_page">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -1327,8 +1327,7 @@ QPushButton:hover {
 }</string>
              </property>
              <property name="text">
-              <string>Type the characters in the image to the field below: 
-Sending to xxx@gmail.com</string>
+              <string>Type the characters in the image to the field below:</string>
              </property>
             </widget>
            </item>

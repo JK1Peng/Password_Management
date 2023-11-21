@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>text_field_widget</class>
+ <widget class="QWidget" name="text_field_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>325</width>
-    <height>46</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,12 +31,6 @@
    </property>
    <item>
     <widget class="QFrame" name="frame">
-     <property name="styleSheet">
-      <string notr="true">QFrame {
-background-color:#FDF8F5;
-}
-</string>
-     </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
      </property>
@@ -45,73 +39,30 @@ background-color:#FDF8F5;
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>7</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>5</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>7</number>
+       <number>0</number>
       </property>
       <item>
-       <widget class="QPushButton" name="password_label">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color:#4F4846;
-	font: 16px;
-	 border: 0;
-	 background: none;
-	 box-shadow: none;
-	 border-radius: 5px;
-	background-color:#FDF8F5;
-	text-align: left;
-}
-</string>
-        </property>
-        <property name="text">
-         <string>PushButton</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="copy_button">
+       <widget class="QLineEdit" name="label_edit">
         <property name="minimumSize">
          <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>30</width>
+          <width>0</width>
           <height>30</height>
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	color:#FDF8F5;
-	font: bold 15px; border: 0;
- background: none;
- box-shadow: none;
- border-radius: 2px;
-}
-
-QPushButton:hover {
-	background-color:#E8CEBF
-}
-</string>
-        </property>
-        <property name="text">
-         <string/>
+         <string notr="true">font: 16px;</string>
         </property>
        </widget>
       </item>

@@ -440,11 +440,30 @@ class Ui_main_window(object):
         self.password_label.setObjectName("password_label")
         self.horizontalLayout_14.addWidget(self.password_label)
         self.password_field = QtWidgets.QLineEdit(self.password_frame)
-        self.password_field.setMinimumSize(QtCore.QSize(200, 0))
+        self.password_field.setMinimumSize(QtCore.QSize(280, 0))
         self.password_field.setMaximumSize(QtCore.QSize(600, 16777215))
         self.password_field.setStyleSheet("font: 18px")
         self.password_field.setObjectName("password_field")
         self.horizontalLayout_14.addWidget(self.password_field)
+        self.generate_button = QtWidgets.QPushButton(self.password_frame)
+        self.generate_button.setMinimumSize(QtCore.QSize(120, 30))
+        self.generate_button.setMaximumSize(QtCore.QSize(120, 30))
+        self.generate_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}\n"
+"")
+        self.generate_button.setObjectName("generate_button")
+        self.horizontalLayout_14.addWidget(self.generate_button)
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_14.addItem(spacerItem6)
         self.verticalLayout_5.addWidget(self.password_frame)
@@ -519,7 +538,7 @@ class Ui_main_window(object):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setObjectName("scroll_area")
         self.scroll_contents = QtWidgets.QWidget()
-        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 781, 302))
+        self.scroll_contents.setGeometry(QtCore.QRect(0, 0, 781, 300))
         self.scroll_contents.setObjectName("scroll_contents")
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout(self.scroll_contents)
         self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
@@ -644,12 +663,19 @@ class Ui_main_window(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 649, 700))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 774, 700))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_23 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_23.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_23.setSpacing(0)
         self.verticalLayout_23.setObjectName("verticalLayout_23")
+        self.label_2 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
+        self.label_2.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_23.addWidget(self.label_2)
         self.category_list = QtWidgets.QListWidget(self.scrollAreaWidgetContents)
         self.category_list.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.category_list.setLineWidth(0)
@@ -716,8 +742,109 @@ class Ui_main_window(object):
         self.line_4.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_4.setObjectName("line_4")
         self.verticalLayout_10.addWidget(self.line_4)
-        spacerItem11 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_10.addItem(spacerItem11)
+        self.frame_10 = QtWidgets.QFrame(self.frame_4)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.verticalLayout_24 = QtWidgets.QVBoxLayout(self.frame_10)
+        self.verticalLayout_24.setObjectName("verticalLayout_24")
+        self.frame_11 = QtWidgets.QFrame(self.frame_10)
+        self.frame_11.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_11.setObjectName("frame_11")
+        self.horizontalLayout_23 = QtWidgets.QHBoxLayout(self.frame_11)
+        self.horizontalLayout_23.setObjectName("horizontalLayout_23")
+        self.label = QtWidgets.QLabel(self.frame_11)
+        self.label.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label.setObjectName("label")
+        self.horizontalLayout_23.addWidget(self.label)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_23.addItem(spacerItem11)
+        self.run_security_button = QtWidgets.QPushButton(self.frame_11)
+        self.run_security_button.setMinimumSize(QtCore.QSize(70, 35))
+        self.run_security_button.setMaximumSize(QtCore.QSize(70, 35))
+        self.run_security_button.setStyleSheet("QPushButton {\n"
+"    color:#FDF8F5;\n"
+"    font: bold 20px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#266150;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color:#4e9480;\n"
+"}\n"
+"")
+        self.run_security_button.setObjectName("run_security_button")
+        self.horizontalLayout_23.addWidget(self.run_security_button)
+        self.verticalLayout_24.addWidget(self.frame_11)
+        self.label_8 = QtWidgets.QLabel(self.frame_10)
+        self.label_8.setStyleSheet("QLabel {\n"
+"    font: bold 18px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_8.setObjectName("label_8")
+        self.verticalLayout_24.addWidget(self.label_8)
+        self.label_6 = QtWidgets.QLabel(self.frame_10)
+        self.label_6.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_6.setObjectName("label_6")
+        self.verticalLayout_24.addWidget(self.label_6)
+        self.label_5 = QtWidgets.QLabel(self.frame_10)
+        self.label_5.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_5.setObjectName("label_5")
+        self.verticalLayout_24.addWidget(self.label_5)
+        self.label_4 = QtWidgets.QLabel(self.frame_10)
+        self.label_4.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout_24.addWidget(self.label_4)
+        self.scrollArea_2 = QtWidgets.QScrollArea(self.frame_10)
+        self.scrollArea_2.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.scrollArea_2.setWidgetResizable(True)
+        self.scrollArea_2.setObjectName("scrollArea_2")
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 774, 572))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.verticalLayout_25 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_25.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_25.setSpacing(0)
+        self.verticalLayout_25.setObjectName("verticalLayout_25")
+        self.label_7 = QtWidgets.QLabel(self.scrollAreaWidgetContents_2)
+        self.label_7.setStyleSheet("QLabel {\n"
+"    font: bold 14px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_7.setObjectName("label_7")
+        self.verticalLayout_25.addWidget(self.label_7)
+        self.frame_13 = QtWidgets.QFrame(self.scrollAreaWidgetContents_2)
+        self.frame_13.setMinimumSize(QtCore.QSize(0, 30))
+        self.frame_13.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.frame_13.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_13.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_13.setObjectName("frame_13")
+        self.verticalLayout_25.addWidget(self.frame_13)
+        self.security_table = QtWidgets.QTableWidget(self.scrollAreaWidgetContents_2)
+        self.security_table.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.security_table.setColumnCount(6)
+        self.security_table.setObjectName("security_table")
+        self.security_table.setRowCount(0)
+        self.verticalLayout_25.addWidget(self.security_table)
+        self.scrollArea_2.setWidget(self.scrollAreaWidgetContents_2)
+        self.verticalLayout_24.addWidget(self.scrollArea_2)
+        self.verticalLayout_10.addWidget(self.frame_10)
         self.verticalLayout_9.addWidget(self.frame_4)
         self.verticalLayout_8.addWidget(self.frame_3)
         self.stacked_widget.addWidget(self.security_page)
@@ -776,6 +903,35 @@ class Ui_main_window(object):
         self.line_6.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_6.setObjectName("line_6")
         self.verticalLayout_14.addWidget(self.line_6)
+        self.frame_12 = QtWidgets.QFrame(self.frame_8)
+        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_12.setObjectName("frame_12")
+        self.verticalLayout_26 = QtWidgets.QVBoxLayout(self.frame_12)
+        self.verticalLayout_26.setSpacing(12)
+        self.verticalLayout_26.setObjectName("verticalLayout_26")
+        self.profile_username_label = QtWidgets.QLabel(self.frame_12)
+        self.profile_username_label.setStyleSheet("QLabel {\n"
+"    font: bold 24px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.profile_username_label.setObjectName("profile_username_label")
+        self.verticalLayout_26.addWidget(self.profile_username_label)
+        self.profile_email_label = QtWidgets.QLabel(self.frame_12)
+        self.profile_email_label.setStyleSheet("QLabel {\n"
+"    font: bold 24px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.profile_email_label.setObjectName("profile_email_label")
+        self.verticalLayout_26.addWidget(self.profile_email_label)
+        self.profile_created_label = QtWidgets.QLabel(self.frame_12)
+        self.profile_created_label.setStyleSheet("QLabel {\n"
+"    font: bold 24px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.profile_created_label.setObjectName("profile_created_label")
+        self.verticalLayout_26.addWidget(self.profile_created_label)
+        self.verticalLayout_14.addWidget(self.frame_12)
         spacerItem13 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_14.addItem(spacerItem13)
         self.verticalLayout_13.addWidget(self.frame_8)
@@ -842,6 +998,13 @@ class Ui_main_window(object):
         self.export_frame.setObjectName("export_frame")
         self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.export_frame)
         self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.label_3 = QtWidgets.QLabel(self.export_frame)
+        self.label_3.setStyleSheet("QLabel {\n"
+"    font: bold 20px;\n"
+"    color:#4F4846;\n"
+"}")
+        self.label_3.setObjectName("label_3")
+        self.verticalLayout_19.addWidget(self.label_3)
         self.export_frame1 = QtWidgets.QFrame(self.export_frame)
         self.export_frame1.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.export_frame1.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -958,7 +1121,7 @@ class Ui_main_window(object):
         main_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(main_window)
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(main_window)
 
     def retranslateUi(self, main_window):
@@ -975,6 +1138,7 @@ class Ui_main_window(object):
         self.account_label.setText(_translate("main_window", "Account Name:"))
         self.url_label.setText(_translate("main_window", "URL: "))
         self.password_label.setText(_translate("main_window", "Password:*"))
+        self.generate_button.setText(_translate("main_window", "Generate"))
         self.p_category_label.setText(_translate("main_window", "Category:"))
         self.add_error_label.setText(_translate("main_window", "*A password with the same domain and account name already exists"))
         self.add_password_button.setText(_translate("main_window", "Add Password"))
@@ -982,9 +1146,25 @@ class Ui_main_window(object):
         self.title_label_3.setText(_translate("main_window", "Groups"))
         self.add_new_cat_label.setText(_translate("main_window", "Add new category:"))
         self.new_category_button.setText(_translate("main_window", "Add"))
+        self.label_2.setText(_translate("main_window", "Here you can add a new category to group your passwords along with a category color. All passwords in \n"
+"that category will be displayed with the chosen color. Color association by category has been shown to \n"
+"improve memorability."))
         self.title_label_2.setText(_translate("main_window", "Security"))
+        self.label.setText(_translate("main_window", "Run a password strength test:"))
+        self.run_security_button.setText(_translate("main_window", "Go"))
+        self.label_8.setText(_translate("main_window", "If your password is marked as weak, consider making your password longer, \n"
+"adding uppercase letters, numbers, and/or symbols. Avoid common names or words."))
+        self.label_6.setText(_translate("main_window", "Extremely weak: can be cracked in under 100 seconds"))
+        self.label_5.setText(_translate("main_window", "Weak: can be cracked in under 20 minutes "))
+        self.label_4.setText(_translate("main_window", "Somewhat weak: can be cracked in under 24 hours"))
+        self.label_7.setText(_translate("main_window", "* Times calculated based on 10 guesses per second"))
         self.title_label_4.setText(_translate("main_window", "Profile"))
+        self.profile_username_label.setText(_translate("main_window", "Username:"))
+        self.profile_email_label.setText(_translate("main_window", "Email:"))
+        self.profile_created_label.setText(_translate("main_window", "Created account: "))
         self.title_label_5.setText(_translate("main_window", "Settings"))
+        self.label_3.setText(_translate("main_window", "Here you can import and export your passwords to migrate between \n"
+"managers or create offline backups"))
         self.export_password_label.setText(_translate("main_window", "Export passwords to csv file"))
         self.export_button.setText(_translate("main_window", "Download"))
         self.export_loc_label.setText(_translate("main_window", "Downloaded to ./passwords.csv"))

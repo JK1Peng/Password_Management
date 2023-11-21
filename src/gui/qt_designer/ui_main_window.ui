@@ -534,7 +534,7 @@ QPushButton:hover {
           <string notr="true"/>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="password_page">
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1024,7 +1024,7 @@ QPushButton:hover {
                      <widget class="QLineEdit" name="password_field">
                       <property name="minimumSize">
                        <size>
-                        <width>200</width>
+                        <width>280</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -1036,6 +1036,41 @@ QPushButton:hover {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">font: 18px</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="generate_button">
+                      <property name="minimumSize">
+                       <size>
+                        <width>120</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>120</width>
+                        <height>30</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton {
+	color:#FDF8F5;
+	font: bold 20px;
+	 border: 0;
+	 background: none;
+	 box-shadow: none;
+	 border-radius: 5px;
+	background-color:#266150;
+}
+
+QPushButton:hover {
+	background-color:#4e9480;
+}
+</string>
+                      </property>
+                      <property name="text">
+                       <string>Generate</string>
                       </property>
                      </widget>
                     </item>
@@ -1220,7 +1255,7 @@ QPushButton:hover {
                    <x>0</x>
                    <y>0</y>
                    <width>781</width>
-                   <height>302</height>
+                   <height>300</height>
                   </rect>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -1540,7 +1575,7 @@ QPushButton:hover {
                         <rect>
                          <x>0</x>
                          <y>0</y>
-                         <width>649</width>
+                         <width>774</width>
                          <height>700</height>
                         </rect>
                        </property>
@@ -1560,6 +1595,21 @@ QPushButton:hover {
                         <property name="bottomMargin">
                          <number>0</number>
                         </property>
+                        <item>
+                         <widget class="QLabel" name="label_2">
+                          <property name="styleSheet">
+                           <string notr="true">QLabel {
+	font: bold 14px;
+	color:#4F4846;
+}</string>
+                          </property>
+                          <property name="text">
+                           <string>Here you can add a new category to group your passwords along with a category color. All passwords in 
+that category will be displayed with the chosen color. Color association by category has been shown to 
+improve memorability.</string>
+                          </property>
+                         </widget>
+                        </item>
                         <item>
                          <widget class="QListWidget" name="category_list">
                           <property name="frameShape">
@@ -1754,17 +1804,230 @@ QPushButton:hover {
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                  <widget class="QFrame" name="frame_10">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
                    </property>
-                  </spacer>
+                   <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <item>
+                     <widget class="QFrame" name="frame_11">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_23">
+                       <item>
+                        <widget class="QLabel" name="label">
+                         <property name="styleSheet">
+                          <string notr="true">QLabel {
+	font: bold 18px;
+	color:#4F4846;
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>Run a password strength test:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="horizontalSpacer_7">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="run_security_button">
+                         <property name="minimumSize">
+                          <size>
+                           <width>70</width>
+                           <height>35</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>70</width>
+                           <height>35</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+	color:#FDF8F5;
+	font: bold 20px;
+	 border: 0;
+	 background: none;
+	 box-shadow: none;
+	 border-radius: 5px;
+	background-color:#266150;
+}
+
+QPushButton:hover {
+	background-color:#4e9480;
+}
+</string>
+                         </property>
+                         <property name="text">
+                          <string>Go</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_8">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 18px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>If your password is marked as weak, consider making your password longer, 
+adding uppercase letters, numbers, and/or symbols. Avoid common names or words.</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_6">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 14px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Extremely weak: can be cracked in under 100 seconds</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_5">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 14px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Weak: can be cracked in under 20 minutes </string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_4">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 14px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Somewhat weak: can be cracked in under 24 hours</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QScrollArea" name="scrollArea_2">
+                      <property name="frameShape">
+                       <enum>QFrame::NoFrame</enum>
+                      </property>
+                      <property name="widgetResizable">
+                       <bool>true</bool>
+                      </property>
+                      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+                       <property name="geometry">
+                        <rect>
+                         <x>0</x>
+                         <y>0</y>
+                         <width>774</width>
+                         <height>572</height>
+                        </rect>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_25">
+                        <property name="spacing">
+                         <number>0</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <widget class="QLabel" name="label_7">
+                          <property name="styleSheet">
+                           <string notr="true">QLabel {
+	font: bold 14px;
+	color:#4F4846;
+}</string>
+                          </property>
+                          <property name="text">
+                           <string>* Times calculated based on 10 guesses per second</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QFrame" name="frame_13">
+                          <property name="minimumSize">
+                           <size>
+                            <width>0</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>16777215</width>
+                            <height>30</height>
+                           </size>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Raised</enum>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QTableWidget" name="security_table">
+                          <property name="frameShape">
+                           <enum>QFrame::NoFrame</enum>
+                          </property>
+                          <property name="columnCount">
+                           <number>6</number>
+                          </property>
+                          <column/>
+                          <column/>
+                          <column/>
+                          <column/>
+                          <column/>
+                          <column/>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -1940,6 +2203,60 @@ QPushButton:hover {
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="frame_12">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_26">
+                    <property name="spacing">
+                     <number>12</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="profile_username_label">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 24px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Username:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="profile_email_label">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 24px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Email:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="profile_created_label">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 24px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Created account: </string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                  <item>
@@ -2140,6 +2457,20 @@ QPushButton:hover {
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_19">
+                    <item>
+                     <widget class="QLabel" name="label_3">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+	font: bold 20px;
+	color:#4F4846;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Here you can import and export your passwords to migrate between 
+managers or create offline backups</string>
+                      </property>
+                     </widget>
+                    </item>
                     <item>
                      <widget class="QFrame" name="export_frame1">
                       <property name="frameShape">

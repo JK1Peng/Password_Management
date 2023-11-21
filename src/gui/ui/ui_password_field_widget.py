@@ -31,11 +31,19 @@ class Ui_Form(object):
         self.horizontalLayout.setContentsMargins(5, 7, 5, 7)
         self.horizontalLayout.setSpacing(5)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.password_label = QtWidgets.QLabel(self.frame)
-        self.password_label.setStyleSheet("QLabel {\n"
-"    font: 16px;\n"
+        self.password_label = QtWidgets.QPushButton(self.frame)
+        self.password_label.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.password_label.setStyleSheet("QPushButton {\n"
 "    color:#4F4846;\n"
-"}")
+"    font: 16px;\n"
+"     border: 0;\n"
+"     background: none;\n"
+"     box-shadow: none;\n"
+"     border-radius: 5px;\n"
+"    background-color:#FDF8F5;\n"
+"    text-align: left;\n"
+"}\n"
+"")
         self.password_label.setObjectName("password_label")
         self.horizontalLayout.addWidget(self.password_label)
         self.copy_button = QtWidgets.QPushButton(self.frame)
@@ -64,7 +72,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.password_label.setText(_translate("Form", "TextLabel"))
+        self.password_label.setText(_translate("Form", "PushButton"))
 
 
 if __name__ == "__main__":

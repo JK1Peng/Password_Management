@@ -714,7 +714,7 @@ class Ui_login_window(object):
         login_window.setCentralWidget(self.central_widget)
 
         self.retranslateUi(login_window)
-        self.stacked_widget.setCurrentIndex(0)
+        self.stacked_widget.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(login_window)
 
     def retranslateUi(self, login_window):
@@ -749,8 +749,7 @@ class Ui_login_window(object):
         self.hint_email_label.setText(_translate("login_window", "Email:"))
         self.hint_back_button.setText(_translate("login_window", "Back to login"))
         self.hint_send_button.setText(_translate("login_window", "Enter"))
-        self.label.setText(_translate("login_window", "Type the characters in the image to the field below: \n"
-"Sending to xxx@gmail.com"))
+        self.label.setText(_translate("login_window", "Type the characters in the image to the field below:"))
         self.captcha_label.setText(_translate("login_window", "TextLabel"))
         self.refresh_button.setText(_translate("login_window", "Refresh"))
         self.captcha_cancel_button.setText(_translate("login_window", "Cancel"))

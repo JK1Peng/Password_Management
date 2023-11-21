@@ -15,6 +15,7 @@ import src.encryption.key_rotation as key_rotate
 import src.encryption.encryption as AESmode
 from Crypto.Protocol.KDF import PBKDF2
 
+
 """ 
 @param: username: the user's username
 @param: password: the user's master password
@@ -25,8 +26,6 @@ from Crypto.Protocol.KDF import PBKDF2
 
 Allows a user to authenticate themself with the database and establish a connection.
 """
-
-
 def login(username, password):
     # get database connection
     db = connect()
@@ -122,8 +121,6 @@ def login(username, password):
 
 Allows a user to make a new account and get their user id.
 """
-
-
 def sign_up(username, password, email, hint=None):
     # get database connection
     db = connect()
@@ -194,8 +191,6 @@ def sign_up(username, password, email, hint=None):
 
 Gets all passwords for a specific user. Can also be filtered using a search term.
 """
-
-
 def get_user_passwords(user_id, query=""):
     # get database connection
     db = connect()
@@ -269,9 +264,7 @@ def get_user_passwords(user_id, query=""):
 
 Adds a password the user's password repo.
 """
-
-
-def add_password(user_id, domain, password, account_name="", url="", category=""):
+def add_password(user_id, domain, password, account_name="", url="", category="-"):
     # get database connection
     db = connect()
     if db is not None:
@@ -297,6 +290,8 @@ def add_password(user_id, domain, password, account_name="", url="", category=""
 
         query_response = execute_query(db, "SELECT key FROM users WHERE user_id = %(user_id)s;",
                                        {"user_id": user_id})
+
+        # encrypt password
         key = query_response[0][0]
         key = key.replace(r'\x', '')
         key = bytes.fromhex(key)
@@ -328,8 +323,6 @@ def add_password(user_id, domain, password, account_name="", url="", category=""
 
 Remove password from user repo.
 """
-
-
 def remove_password(user_id, domain, account_name):
     # get database connection
     db = connect()
@@ -358,17 +351,18 @@ def remove_password(user_id, domain, account_name):
 
 Remove account for given user id or username.
 """
-
-
 def remove_account(user_id=None, username=None):
     db = connect()
     if db is not None:
+        # check which parameter was left as None, as user the other to
+        #   index the users table
         if username is None:
             execute_update(db, f"DELETE FROM users WHERE user_id={user_id}")
 
         elif user_id is None:
             execute_update(db, f"DELETE FROM users WHERE username='{username}'")
 
+        # if both are left None, return error code 0
         else:
             return 0
 
@@ -389,11 +383,11 @@ def remove_account(user_id=None, username=None):
 
 Get email for given user id or username
 """
-
-
 def get_user_email(user_id=None, username=None):
     db = connect()
     if db is not None:
+        # check which parameter was left as None, as user the other to
+        #   index the users table
         if username is None:
             email = execute_query(db, f"SELECT email FROM users WHERE user_id={user_id}")[0][0]
             db.close()
@@ -405,6 +399,7 @@ def get_user_email(user_id=None, username=None):
             db.close()
             return email
 
+        # if both parameters are left None, return 0
         db.close()
         return 0
     else:
@@ -422,17 +417,18 @@ def get_user_email(user_id=None, username=None):
 
 Set 'verified' to true for given user id or username
 """
-
-
 def verify_user(user_id=None, username=None):
     db = connect()
     if db is not None:
+        # check which parameter was left as None, as user the other to
+        #   index the users table
         if username is None:
             execute_update(db, f"UPDATE users SET verified = true WHERE user_id={user_id}")
 
         elif user_id is None:
             execute_update(db, f"UPDATE users SET verified = true WHERE username='{username}'")
 
+        # if both paramters are NOne, return 0
         else:
             db.close()
             return 0
@@ -454,18 +450,18 @@ def verify_user(user_id=None, username=None):
 
 Check that given username and email match.
 """
-
-
 def check_user_email(username, email):
     db = connect()
     if db is not None:
         response = execute_query(db, f"SELECT * FROM users WHERE username = %(username)s AND email = %(email)s",
                                  {"username": username, "email": email})
 
+        # check that there is at least one response
         if len(response) > 0:
             db.close()
             return 1
 
+        # if not, return 0
         return 0
     else:
         print("Could not access the database while checking user email")
@@ -481,18 +477,18 @@ def check_user_email(username, email):
 
 Get user's password hint.
 """
-
-
 def get_user_hint(username):
     db = connect()
     if db is not None:
         response = execute_query(db, f"SELECT hint FROM users WHERE username = %(username)s;",
                                  {"username": username})
 
+        # if at least one response is retrieved, return the hint
         if len(response) > 0:
             db.close()
             return response[0][0]
 
+        # if not, return 0
         return 0
     else:
         print("Could not access the database while getting user hint")
@@ -509,19 +505,19 @@ def get_user_hint(username):
 
 Add password category for a user.
 """
-
-
 def add_category(user_id, category_name):
     db = connect()
     if db is not None:
         response = execute_query(db, f"SELECT * FROM categories WHERE user_id = {user_id} "
                                      f"AND category_name = %(category)s;",
                                  {"category": category_name})
+
+        # check that no category of the same name exists
         if len(response) != 0:
-            print("add cat response", response)
             db.close()
             return 0
 
+        # if not, add new category to categories table
         execute_update(db, f"INSERT INTO categories (user_id, category_name) VALUES ({user_id}, %(category)s);",
                        {"category": category_name})
         db.close()
@@ -539,8 +535,6 @@ def add_category(user_id, category_name):
 
 Get list of user's password categories.
 """
-
-
 def get_user_categories(user_id):
     db = connect()
     if db is not None:
@@ -561,13 +555,11 @@ def get_user_categories(user_id):
 
 Get list of passwords for a category.
 """
-
-
 def get_category_passwords(category_id):
     db = connect()
     if db is not None:
-        response = execute_query(db,
-                                 f"SELECT domain, account_name, url, password from passwords WHERE category_id = {category_id}")
+        response = execute_query(db, f"SELECT domain, account_name, url, password from passwords "
+                                     f"WHERE category_id = {category_id}")
         db.close()
         return response
     else:
@@ -584,8 +576,6 @@ def get_category_passwords(category_id):
 
 Change a password category's color.
 """
-
-
 def change_category_color(category_id, color):
     db = connect()
     if db is not None:
@@ -604,8 +594,6 @@ def change_category_color(category_id, color):
 
 Get name of password category.
 """
-
-
 def get_category_name(category_id):
     db = connect()
     if db is not None:
@@ -624,8 +612,6 @@ def get_category_name(category_id):
 
 Get hex color for password category.
 """
-
-
 def get_category_color(category_id):
     db = connect()
     if db is not None:
@@ -640,6 +626,13 @@ def get_category_color(category_id):
 def update_user_password(user_id, entry_id, domain, url, account_name, category, password):
     db = connect()
     if db is not None:
+        query_response = execute_query(db, "SELECT key FROM users WHERE user_id = %(user_id)s;",
+                                       {"user_id": user_id})
+        key = query_response[0][0]
+        key = key.replace(r'\x', '')
+        key = bytes.fromhex(key)
+        aes_r = AESmode.AESmode(key)
+        password = aes_r.encrypt(password)
         execute_update(db, f"UPDATE passwords SET domain = %(domain)s, url = %(url)s, account_name = %(account_name)s, "
                            f"category_id = (SELECT category_id FROM categories WHERE user_id = {user_id} "
                            f"AND category_name = %(category)s), password = %(password)s WHERE entry_id = {entry_id};",
@@ -650,6 +643,18 @@ def update_user_password(user_id, entry_id, domain, url, account_name, category,
         return get_user_passwords(user_id)
     else:
         print("Could not access the database while updating user passwords")
+
+    return -1
+
+
+def get_account_info(user_id):
+    db = connect()
+    if db is not None:
+        query_response = execute_query(db, f"SELECT username, email, created_datetime FROM users "
+                                           f"WHERE user_id = {user_id}")[0]
+        return query_response
+    else:
+        print("Could not access the database while getting account info")
 
     return -1
 

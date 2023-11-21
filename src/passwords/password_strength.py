@@ -1,7 +1,26 @@
+"""
+File: src/passwords/password_strength.py
+
+Author: Aaron Kersten, Jiakai Peng
+
+Description: Checks the strength of a password based on specific criteria,
+             and using zxcvbn.
+"""
+
 from zxcvbn import zxcvbn
 import re
 
 
+"""
+@param: password: password to check
+@param: domain: associated domain
+@param: username: associated username
+@return: True for valid password, or
+         message to describe why it was marked invalid
+         
+Uses both measures of strength measure--criteria and zxcvbn to verify that
+the password is strong.
+"""
 def password_check(password, domain="", username=""):
     strength = measure_password_strength(password, domain, username)
     valid = validate_password_characteristics(password)
@@ -17,12 +36,29 @@ def password_check(password, domain="", username=""):
     return True
 
 
+"""
+@param: password: password to check
+@param: domain: associated domain
+@param: username: associated username
+@return: strength score in range [0, 5)
+
+Measures password strength using zxcvbn.
+"""
 def measure_password_strength(password, domain="", username=""):
-    results = zxcvbn(password, user_inputs=[domain, username])
-    return results["score"]
-    # results["crack_times_seconds"]["offline_fast_hashing_1e10_per_second"]
+    try:
+        results = zxcvbn(password, user_inputs=[domain, username])
+        return results["score"]
+    except Exception as e:
+        return 0
 
 
+"""
+@param: password: password to check
+@return: True for valid password, or
+         message to describe why it was marked invalid
+         
+Checks password against a set of criteria.
+"""
 def validate_password_characteristics(password):
 
     length_error = len(password) < 8

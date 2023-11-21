@@ -16,7 +16,7 @@ from src.gui.ui.ui_login_window import Ui_login_window
 from src.gui.MainWindow import MainWindow
 import src.database.user_controller as user_controller
 import random
-from src.smtp.email_controller import send_verification_email, send_hint_email, get_credentials
+from src.smtp.email_controller import send_verification_email, send_hint_email
 from src.captcha.generate_captcha import generate_captcha
 import os
 from definitions import ROOT_DIR
@@ -138,16 +138,25 @@ class LoginWindow:
     text fields red upon failure. 
     """
     def login(self):
+        # get username and password from text fields
         self.username = self.ui.username_field.text()
         self.password = self.ui.password_field.text()
+
+        # send login request to database
         response = user_controller.login(self.username, self.password)
+
+        # username or password incorrect
         if response == 0:
             self.ui.username_field.clear()
             self.ui.password_field.clear()
             self.ui.username_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.password_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+
+        # account not verified
         elif response == -2:
             self.ui.login_verify_frame.show()
+
+        # login successful: open main window
         else:
             self.main_win = MainWindow(response)
             self.main_win.show()
@@ -159,17 +168,30 @@ class LoginWindow:
     If not, display relevant error message. 
     """
     def signup(self):
+        # get strings from text fields
         self.username = self.ui.username_field1.text()
         self.password = self.ui.password_field1.text()
         confirm = self.ui.confirm_field1.text()
         email = self.ui.email_field1.text()
         hint = self.ui.password_hint_field.text()
+
+        # calculate password strength
         password_strength = password_check(self.password, self.username)
+
+        # if hint is left blank, set to None
         if hint == "":
             hint = None
+
+        # check that password equals confirm password
         if self.password == confirm:
+
+            # verify password is strong
             if password_strength is True:
+
+                # send sign up request to the database
                 response = user_controller.sign_up(self.username, self.password, email, hint)
+
+                # username or email already in use
                 if response == 0:
                     self.ui.signup_error_label.setText("*Username or email is already in use")
                     self.ui.signup_error_label.show()
@@ -177,11 +199,16 @@ class LoginWindow:
                     self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
                     self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px}")
                     self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px}")
+
+                # if login successful, go to verification page
                 else:
                     self.to_verify_page(email)
+
+            # if password is weak, display error label
             else:
                 self.ui.signup_error_label.setText(f"*Password is not strong enough: {password_strength}")
                 self.ui.signup_error_label.show()
+
         else:
             self.ui.signup_error_label.setText("*Passwords do no match")
             self.ui.signup_error_label.show()
@@ -194,10 +221,16 @@ class LoginWindow:
     Verify entered code. Login into MainWindow upon success.
     """
     def verify_code(self):
+        # get code from text field
         code = self.ui.verify_code_field.text()
+
+        # check that code is correct
         if code == self.code:
+            # verify user and login
             user_controller.verify_user(username=self.username)
             response = user_controller.login(self.username, self.password)
+
+            # if original login credentials were not correct, return to login page
             if response == 0:
                 self.ui.login_verify_frame.hide()
                 self.ui.username_field.clear()
@@ -209,6 +242,8 @@ class LoginWindow:
                 self.main_win = MainWindow(response)
                 self.main_win.show()
                 self.login_win.close()
+
+        # if not, make text field red
         else:
             self.ui.verify_code_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
 
@@ -226,12 +261,18 @@ class LoginWindow:
             self.ui.hint_username_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
             self.ui.hint_email_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
 
+    """
+    Regenerate a captcha image in the captcha folder.
+    """
     def regen_captcha(self):
         file_location = os.path.join(ROOT_DIR, "src", "captcha", "captcha.png")
         self.captcha_text = generate_captcha(file_location)
         pixmap = QPixmap(file_location)
         self.ui.captcha_label.setPixmap(pixmap)
 
+    """
+    Check entered code matches the captcha. Redirect to next_fun.
+    """
     def check_captcha(self, next_func):
         if self.ui.captcha_code_field.text() == self.captcha_text:
             next_func()
