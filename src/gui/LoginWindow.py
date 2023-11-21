@@ -11,7 +11,7 @@ Description: The first window that shows up when the program is run. Prompts
 import sys
 
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLineEdit
 from src.gui.ui.ui_login_window import Ui_login_window
 from src.gui.MainWindow import MainWindow
 import src.database.user_controller as user_controller
@@ -20,6 +20,8 @@ from src.smtp.email_controller import send_verification_email, send_hint_email, 
 from src.captcha.generate_captcha import generate_captcha
 import os
 from definitions import ROOT_DIR
+from src.passwords.password_strength import password_check
+
 
 
 class LoginWindow:
@@ -39,6 +41,8 @@ class LoginWindow:
 
         # setup ui
         self.ui.setupUi(self.login_win)
+
+        self.ui.password_field.setEchoMode(QLineEdit.EchoMode.Password)
 
         # set initial page
         self.to_login_page()
@@ -160,19 +164,24 @@ class LoginWindow:
         confirm = self.ui.confirm_field1.text()
         email = self.ui.email_field1.text()
         hint = self.ui.password_hint_field.text()
+        password_strength = password_check(self.password, self.username)
         if hint == "":
             hint = None
         if self.password == confirm:
-            response = user_controller.sign_up(self.username, self.password, email, hint)
-            if response == 0:
-                self.ui.signup_error_label.setText("*Username or email is already in use")
-                self.ui.signup_error_label.show()
-                self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
-                self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
-                self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px}")
-                self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px}")
+            if password_strength is True:
+                response = user_controller.sign_up(self.username, self.password, email, hint)
+                if response == 0:
+                    self.ui.signup_error_label.setText("*Username or email is already in use")
+                    self.ui.signup_error_label.show()
+                    self.ui.username_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+                    self.ui.email_field1.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")
+                    self.ui.password_field1.setStyleSheet("QLineEdit {font: 15px}")
+                    self.ui.confirm_field1.setStyleSheet("QLineEdit {font: 15px}")
+                else:
+                    self.to_verify_page(email)
             else:
-                self.to_verify_page(email)
+                self.ui.signup_error_label.setText(f"*Password is not strong enough: {password_strength}")
+                self.ui.signup_error_label.show()
         else:
             self.ui.signup_error_label.setText("*Passwords do no match")
             self.ui.signup_error_label.show()
@@ -224,9 +233,7 @@ class LoginWindow:
         self.ui.captcha_label.setPixmap(pixmap)
 
     def check_captcha(self, next_func):
-        print(self.captcha_text)
         if self.ui.captcha_code_field.text() == self.captcha_text:
-            print("correct")
             next_func()
         else:
             self.ui.captcha_code_field.setStyleSheet("QLineEdit {font: 15px;background-color:#fa9487}")

@@ -10,7 +10,10 @@ Description: Contains all functions and logic the GUI needs to interact with
 
 from src.database.postgres import connect, execute_query, execute_update
 import datetime
-
+import pyotp
+import src.encryption.key_rotation as key_rotate
+import src.encryption.encryption as AESmode
+from Crypto.Protocol.KDF import PBKDF2
 
 """ 
 @param: username: the user's username
@@ -22,17 +25,24 @@ import datetime
 
 Allows a user to authenticate themself with the database and establish a connection.
 """
+
+
 def login(username, password):
     # get database connection
     db = connect()
     if db is not None:
         # get master password for the current user
-        query_response = execute_query(db, "SELECT master_password, verified FROM users WHERE username = %(username)s;",
-                                        {"username": username})
+        query_response = execute_query(db,
+                                       "SELECT master_password, verified,key FROM users WHERE username = %(username)s;",
+                                       {"username": username})
 
         # check that a password was returned
         if (len(query_response)) == 1:
-            master_password, verified = query_response[0]
+            master_password, verified, key = query_response[0]
+            key = key.replace(r'\x', '')
+            key = bytes.fromhex(key)
+            aes_r = AESmode.AESmode(key)
+            master_password = aes_r.decrypt(master_password)
 
             # return error code -2 for unverified user
             if not verified:
@@ -56,6 +66,18 @@ def login(username, password):
             if master_password == password:
                 user_id = execute_query(db, f"SELECT user_id FROM users WHERE username = %(username)s;",
                                         {"username": username})[0][0]
+
+                # # twoFactorA secret
+                # totp_secret = execute_query(db, f"SELECT totp_secret FROM users WHERE username = %(username)s;",
+                #                             {"username": username})[0][0]
+                # # twoFactorA code
+                # user_input_totp = input("Enter the TOTP from your app: ")
+                # totp = pyotp.TOTP(totp_secret)
+                # if totp.verify(user_input_totp):
+                #     return user_id
+                # else:
+                #     # if fail
+                #     return -3
 
                 # update user's last accessed date
                 ct = datetime.datetime.now()
@@ -97,9 +119,11 @@ def login(username, password):
 @return: user_id for successful signup and login
          0 for duplicate username or email error
          -1 for database connection error
-         
+
 Allows a user to make a new account and get their user id.
 """
+
+
 def sign_up(username, password, email, hint=None):
     # get database connection
     db = connect()
@@ -123,17 +147,34 @@ def sign_up(username, password, email, hint=None):
 
         # get current timestamp
         ct = datetime.datetime.now()
-
         # set hint to first four characters of the password
         if hint is None:
             hint = password[:min(4, len(password))] + "..."
 
-        # add new user to the users table in the database
+        manager = key_rotate.KeyRotationManager()
+        new_salt = manager.rotate_key()
+        new_key = PBKDF2(password, new_salt, 32)
+        aes_encryption = AESmode.AESmode(new_key)
+        # set 2fa secret
+        secret = pyotp.random_base32()
+        password = aes_encryption.encrypt(password)
+        # print(new_salt)
+        # add new user to the users table in the database(your version)
+        # execute_update(db, f"INSERT INTO users (username, master_password, email, created_datetime, "
+        #                    f"last_accessed_datetime, hint) "
+        #                    f"VALUES (%(username)s, %(master_password)s, %(email)s, '{ct}', '{ct}', %(hint)s);",
+        #                {"username": username, "master_password": password, "email": email,
+        #                 "hint": hint,
+        #                 "created_datetime": ct, "last_accessed_datetime": ct})
         execute_update(db, f"INSERT INTO users (username, master_password, email, created_datetime, "
-                           f"last_accessed_datetime, hint) "
-                           f"VALUES (%(username)s, %(master_password)s, %(email)s, '{ct}', '{ct}', %(hint)s);",
-                       {"username": username, "master_password": password, "email": email, "hint": hint})
+                           f"last_accessed_datetime, hint, secret, salt, key) "
+                           f"VALUES (%(username)s, %(master_password)s, %(email)s, %(created_datetime)s, "
+                           f"%(last_accessed_datetime)s, %(hint)s, %(secret)s, %(salt)s, %(key)s);",
+                       {"username": username, "master_password": password, "email": email,
+                        "hint": hint, "secret": secret, "salt": new_salt, "key": new_key,
+                        "created_datetime": ct, "last_accessed_datetime": ct})
 
+        print(2)
         # close connection and login to retrieve and return user_id
         db.close()
         return 1
@@ -150,20 +191,36 @@ def sign_up(username, password, email, hint=None):
 @result: a list of tuples for each password with the form:
     (domain, account_name, url, password),
     0 if query is invalid
-    
+
 Gets all passwords for a specific user. Can also be filtered using a search term.
 """
+
+
 def get_user_passwords(user_id, query=""):
     # get database connection
     db = connect()
+    decrypted_passwords = []
     if db is not None:
 
         # if no query is given, grab the entire password repo
         if query == "":
-            passwords = execute_query(db, "SELECT domain, account_name, url, password, category_name, color "
+            passwords = execute_query(db, "SELECT domain, account_name, url, password, category_name, color, entry_id "
                                           "FROM passwords "
                                           "INNER JOIN categories on passwords.category_id = categories.category_id "
-                                          f"WHERE passwords.user_id = {user_id}")
+                                          f"WHERE passwords.user_id = {user_id} ORDER BY domain")
+
+            query_response = execute_query(db, "SELECT key FROM users WHERE user_id = %(user_id)s;",
+                                           {"user_id": user_id})
+
+            key = query_response[0][0]
+            key = key.replace(r'\x', '')
+            key = bytes.fromhex(key)
+            aes_r = AESmode.AESmode(key)
+
+            for password in passwords:
+                decrypted_password = aes_r.decrypt(password[3])
+                decrypted_passwords.append((password[0], password[1], password[2], decrypted_password, password[4],
+                                            password[5], password[6]))
 
         # otherwise, only grab entries with a domain, account name, or url like '...<query>...'
         else:
@@ -172,13 +229,27 @@ def get_user_passwords(user_id, query=""):
             if "\'" in query or "\"" in query:
                 return 0
 
-            passwords = execute_query(db, f"SELECT domain, account_name, url, password FROM passwords p "
-                                          f"WHERE user_id = {user_id} AND (LOWER(domain) LIKE '%{query}%' OR "
-                                          f"LOWER(account_name) LIKE '%{query}%' OR LOWER(url) LIKE '%{query}%');")
+            passwords = execute_query(db, f"SELECT domain, account_name, url, password, category_name, color, entry_id "
+                                          f"FROM passwords p INNER JOIN categories c on p.category_id = c.category_id "
+                                          f"WHERE p.user_id = {user_id} AND (LOWER(domain) LIKE '%{query}%' OR "
+                                          f"LOWER(account_name) LIKE '%{query}%' OR LOWER(url) LIKE '%{query}%')"
+                                          f"ORDER BY domain;")
+
+            query_response = execute_query(db, "SELECT key FROM users WHERE user_id = %(user_id)s;",
+                                           {"user_id": user_id})
+            key = query_response[0][0]
+            key = key.replace(r'\x', '')
+            key = bytes.fromhex(key)
+            aes_r = AESmode.AESmode(key)
+
+            for password in passwords:
+                decrypted_password = aes_r.decrypt(password[3])
+                decrypted_passwords.append((password[0], password[1], password[2], decrypted_password, password[4],
+                                            password[5], password[6]))
 
         # close connection and return passwords
         db.close()
-        return passwords
+        return decrypted_passwords
     else:
         print("Could not access the database while processing get-password request")
 
@@ -198,14 +269,16 @@ def get_user_passwords(user_id, query=""):
 
 Adds a password the user's password repo.
 """
+
+
 def add_password(user_id, domain, password, account_name="", url="", category=""):
     # get database connection
     db = connect()
     if db is not None:
         # get count of user's with matching domain and account names
         matching_pswrd = execute_query(db, f"SELECT COUNT(*) FROM passwords WHERE domain = %(domain)s AND "
-                                           f"account_name = %(account_name)s;",
-                                           {"domain": domain, "account_name": account_name})[0][0]
+                                           f"account_name = %(account_name)s AND user_id = {user_id};",
+                                       {"domain": domain, "account_name": account_name})[0][0]
 
         # if there is an existing password with matching domain and account name, return 0
         if matching_pswrd > 0:
@@ -222,11 +295,19 @@ def add_password(user_id, domain, password, account_name="", url="", category=""
         # get current timestamp
         ct = datetime.datetime.now()
 
+        query_response = execute_query(db, "SELECT key FROM users WHERE user_id = %(user_id)s;",
+                                       {"user_id": user_id})
+        key = query_response[0][0]
+        key = key.replace(r'\x', '')
+        key = bytes.fromhex(key)
+        aes_r = AESmode.AESmode(key)
+        password = aes_r.encrypt(password)
+
         # add new password to user's password repo
         execute_update(db, f"INSERT INTO passwords (user_id, domain, account_name, url, password, created_datetime, "
                            f"last_modified_datetime, category_id) VALUES ({user_id}, %(domain)s, %(account_name)s, "
                            f"%(url)s, %(password)s, '{ct}', '{ct}', {category_id});",
-                           {"domain": domain, "account_name": account_name, "url": url, "password": password})
+                       {"domain": domain, "account_name": account_name, "url": url, "password": password})
 
         # upon successful insert, close connection and return 1
         db.close()
@@ -244,9 +325,11 @@ def add_password(user_id, domain, password, account_name="", url="", category=""
 @param: account_name: password account name
 @return: 1 for successful removal
          -1 for database connection error
-         
+
 Remove password from user repo.
 """
+
+
 def remove_password(user_id, domain, account_name):
     # get database connection
     db = connect()
@@ -254,7 +337,7 @@ def remove_password(user_id, domain, account_name):
         # remove password with given domain and account name from the repo
         execute_update(db, f"DELETE FROM passwords WHERE user_id = {user_id} AND domain = %(domain)s AND "
                            f"account_name = %(account_name)s;",
-                           {"domain": domain, "account_name": account_name})
+                       {"domain": domain, "account_name": account_name})
 
         # upon successful removal, close connection and return 1
         db.close()
@@ -272,9 +355,11 @@ def remove_password(user_id, domain, account_name):
 @return: 1 for successful removal
          0 if both user_id and username are None
          -1 for database connection error
-         
+
 Remove account for given user id or username.
 """
+
+
 def remove_account(user_id=None, username=None):
     db = connect()
     if db is not None:
@@ -301,9 +386,11 @@ def remove_account(user_id=None, username=None):
 @return: user's email upon successulf retrieval
          0 if both user_id and username are None
          -1 for database connection error
-         
+
 Get email for given user id or username
 """
+
+
 def get_user_email(user_id=None, username=None):
     db = connect()
     if db is not None:
@@ -314,7 +401,7 @@ def get_user_email(user_id=None, username=None):
 
         elif user_id is None:
             email = execute_query(db, f"SELECT email FROM users WHERE username=%(username)s",
-                                      {"username": username})[0][0]
+                                  {"username": username})[0][0]
             db.close()
             return email
 
@@ -332,9 +419,11 @@ def get_user_email(user_id=None, username=None):
 @return: 1 for successful verification
          0 if both user_id and username are None
          -1 for database connection error
-         
+
 Set 'verified' to true for given user id or username
 """
+
+
 def verify_user(user_id=None, username=None):
     db = connect()
     if db is not None:
@@ -362,9 +451,11 @@ def verify_user(user_id=None, username=None):
 @return: 1 for successful match
          0 for unsuccessful match
          -1 for database connection error
-         
+
 Check that given username and email match.
 """
+
+
 def check_user_email(username, email):
     db = connect()
     if db is not None:
@@ -387,9 +478,11 @@ def check_user_email(username, email):
 @return: hint upon successful retrieval
          0 for unsuccessful retrieval
          -1 for database connection error
-         
+
 Get user's password hint.
 """
+
+
 def get_user_hint(username):
     db = connect()
     if db is not None:
@@ -413,9 +506,11 @@ def get_user_hint(username):
 @return: 1 for successful add
          0 for attempt to add duplicate category
          -1 for database error
-         
+
 Add password category for a user.
 """
+
+
 def add_category(user_id, category_name):
     db = connect()
     if db is not None:
@@ -441,9 +536,11 @@ def add_category(user_id, category_name):
 @param: user_id: user's id
 @return: list of user categories
          -1 for database error
-         
+
 Get list of user's password categories.
 """
+
+
 def get_user_categories(user_id):
     db = connect()
     if db is not None:
@@ -461,13 +558,16 @@ def get_user_categories(user_id):
 @param: category_id: password category id
 @return: list of passwords
          -1 for database error
-         
+
 Get list of passwords for a category.
 """
+
+
 def get_category_passwords(category_id):
     db = connect()
     if db is not None:
-        response = execute_query(db, f"SELECT domain, account_name, url, password from passwords WHERE category_id = {category_id}")
+        response = execute_query(db,
+                                 f"SELECT domain, account_name, url, password from passwords WHERE category_id = {category_id}")
         db.close()
         return response
     else:
@@ -481,9 +581,11 @@ def get_category_passwords(category_id):
 @param: color: hex color string
 @return: 1 for successful update
          -1 for database error
-         
+
 Change a password category's color.
 """
+
+
 def change_category_color(category_id, color):
     db = connect()
     if db is not None:
@@ -499,9 +601,11 @@ def change_category_color(category_id, color):
 @param: category_id: password category's id
 @return: category name,
          -1 for database error
-         
+
 Get name of password category.
 """
+
+
 def get_category_name(category_id):
     db = connect()
     if db is not None:
@@ -512,13 +616,16 @@ def get_category_name(category_id):
 
     return -1
 
+
 """
 @param: category_id: password category's id
 @return: category color,
          -1 for database error
-         
+
 Get hex color for password category.
 """
+
+
 def get_category_color(category_id):
     db = connect()
     if db is not None:
@@ -528,3 +635,51 @@ def get_category_color(category_id):
         print("Could not access the database while getting category color")
 
     return -1
+
+
+def update_user_password(user_id, entry_id, domain, url, account_name, category, password):
+    db = connect()
+    if db is not None:
+        execute_update(db, f"UPDATE passwords SET domain = %(domain)s, url = %(url)s, account_name = %(account_name)s, "
+                           f"category_id = (SELECT category_id FROM categories WHERE user_id = {user_id} "
+                           f"AND category_name = %(category)s), password = %(password)s WHERE entry_id = {entry_id};",
+                       {"domain": domain, "url": url, "account_name": account_name, "category": category,
+                        "password": password})
+
+        db.close()
+        return get_user_passwords(user_id)
+    else:
+        print("Could not access the database while updating user passwords")
+
+    return -1
+
+
+def update_users_and_reencrypt_passwords(old_key, new_key):
+    db = connect()
+
+    db.execute("SELECT user_id, salt, master_password FROM users")
+    user_records = db.fetchall()
+
+    for user_id, encrypted_salt, encrypted_master_password in user_records:
+        aes_decryptor = AESmode(old_key)
+        decrypted_salt = aes_decryptor.decrypt(encrypted_salt)
+        decrypted_master_password = aes_decryptor.decrypt(encrypted_master_password)
+
+        aes_encryptor = AESmode(new_key)
+        new_encrypted_salt = aes_encryptor.encrypt(decrypted_salt)
+        new_encrypted_master_password = aes_encryptor.encrypt(decrypted_master_password)
+
+        db.execute("UPDATE users SET salt = %s, master_password = %s WHERE user_id = %s",
+                   (new_encrypted_salt, new_encrypted_master_password, user_id))
+
+    db.execute("SELECT id, encrypted_password FROM passwords")
+    password_records = db.fetchall()
+
+    for record_id, encrypted_password in password_records:
+        decrypted_password = aes_decryptor.decrypt(encrypted_password)
+        new_encrypted_password = aes_encryptor.encrypt(decrypted_password)
+
+        db.execute("UPDATE passwords SET password = %s WHERE id = %s", (new_encrypted_password, record_id))
+
+    db.commit()
+    db.close()
