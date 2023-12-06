@@ -1,0 +1,22 @@
+Aaron Kersten:
+- created the Captcha solving feature
+- created the database in AWS RDS
+- implemented the database connection in Python
+- added functions that write queries and updates to the database
+- created functions to measure the strength of passwords
+- created functions to generate passwords subject to our strength measurements
+- implemented SMTP usage to send verification and hint emails to the user
+- designed the login and sign up authentication flows and features
+- implemented the color-coded password group feature
+- created icons for the GUI
+- created the GUI windows in QT Designer
+- added functionality to the UI elements, including the Login Window and each page of the Password Window
+- included images of the GUI in the project report
+- conducted research on password manager design, strong password features, and password memorability. Wrote findings in
+the project report
+- discussed the design and implementation of the project in the section 3 of the report
+- conducted analysis on the potential system failures and project outcomes in section 4
+- completed the report's conclusion
+- created diagrams for the authentication flow, fault tree analysis, and the database ER diagram
+- created poster layout and filled out motivation, capabilities, database, analysis, conclusion, and reference sections
+- discussed encryption, database, analysis, and conclusion sections in the video presentation
