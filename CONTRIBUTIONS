@@ -19,4 +19,20 @@ the project report
 - completed the report's conclusion
 - created diagrams for the authentication flow, fault tree analysis, and the database ER diagram
 - created poster layout and filled out motivation, capabilities, database, analysis, conclusion, and reference sections
-- discussed encryption, database, analysis, and conclusion sections in the video presentation
+- discussed encryption, database, analysis, and conclusion sections in the video presentation|
+
+Jiakai Peng:
+- created AES encryption and PBKDF2 for key of AES
+- created functions create a password with solid strength(not used)
+- created key rotation function that could update the key and renew all data in the database(not implemented due to time)
+- adding new columns to the database to store salt, secret,keys
+- created functions of 2FA(two factor authentication) with google authenticator
+- merging app functions above into the code(most to user controller)
+- encrypted password into the database and decrypt password show to users or for authentication
+the project report
+- done with abstract 
+- writing with motivation and goals
+- complete legal and ethical considerations
+- discussed Data Encryption and Key Management in the section 3 of the report
+- filled out Developed Solution, Background, Data Encryption & Key Management in System in poster
+- discussed motivation, developed solutions, background, and Password Manager Capabilitiessections in the video presentation|
